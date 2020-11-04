@@ -5,6 +5,8 @@
     <head>
         <title>Indice de fragilité numérique | INR</title>
         <link rel="stylesheet" href="/assets/css/style.css"/>
+        <script src="/assets/js/html2pdf.node.js"></script>
+        <script src="/assets/js/generatePDF.js"></script>
     </head>
 
     <body>
@@ -54,13 +56,13 @@
         <!---
         ===== STATS FOR A PLACE =====
         -->
-        <div class="content stats">
+        <div class="content stats" id="stats">
 
             <div class="stats-header">
                 <h1>Paris (75000)</h1>
 
                 <div class="center-vertically">
-                    <div class="btn">
+                    <div class="btn" onclick="generatePDF()">
                         <p>Télécharger</p>
                     </div>
                 </div>
