@@ -16,5 +16,5 @@ spl_autoload_register(function ($class_name)
 
     $file = implode("/", $components);
 
-    @include $file . '.php';
+    @include __DIR__ . '/../' . $file . '.php';
 });
