@@ -83,7 +83,12 @@ header .search-field:hover, header .search-field:focus {
 
 .no-cities {
     width: 60%;
-    margin: 0 auto;
+    height: calc(100vh - 60px);
+    margin: 60px auto 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
 }
 
 .no-cities img {
@@ -173,6 +178,7 @@ header .search-field:hover, header .search-field:focus {
     border: 1px solid #ddd;
     border-radius: 14px;
     margin: 0 auto;
+    transition: 0.3s;
 }
 
 .stats .show-more p {
@@ -184,6 +190,8 @@ header .search-field:hover, header .search-field:focus {
 
 .stats .show-more:hover {
     cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.125);
 }
 
 @media screen and (max-width: 1439px ) {
@@ -207,6 +215,11 @@ header .search-field:hover, header .search-field:focus {
 }
 
 @media screen and (max-width: 720px ) {
+
+    .search-results .result .name {
+        width: 70%;
+    }
+
     .stats .top .left .stat {
         margin: 6px 0;
         width: 100%;
