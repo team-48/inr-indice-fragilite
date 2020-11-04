@@ -7,10 +7,10 @@ interface IParserService
     /**
      * @param string $value
      */
-    public function filter_by_name(string $value);
+    public function filterByName(string $value);
 
     /**
      * @param string $value
      */
-    public function filter_by_comCode(string $value);
+    public function filterByComCode(string $value);
 }

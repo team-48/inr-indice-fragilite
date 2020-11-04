@@ -35,4 +35,11 @@ $app->get("/cities", function (Request $request, Response $response, array $args
     return $controller->getCitiesByPostalCode($request, $response, $args);
 });
 
+$app->get("/stats", function (Request $request, Response $response, array $args) {
+    // Appel à getCitiesByPostalCode pour récupérer la ville avec le code postal
+    // Donc on a : Ville = [codePostal, codeCommune, nom]
+    // Une fois qu'on a la ville, on prend le code commune et on lance un filterByComCode(codeCommune)
+    // On renvoie le resultat de filterByComCode au format JSON
+});
+
 $app->run();

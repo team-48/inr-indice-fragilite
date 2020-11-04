@@ -60,7 +60,7 @@ class ParserService implements IParserService
         return $this->data;
     }
 
-    public function filter_by_name(string $value)
+    public function filterByName(string $value)
     {
         $rows = array();
 
@@ -74,7 +74,7 @@ class ParserService implements IParserService
         return $rows;
     }
 
-    public function filter_by_comCode(string $value)
+    public function filterByComCode(string $value)
     {
         $rows = array();
 
