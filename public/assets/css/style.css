@@ -24,6 +24,12 @@ input:focus, textarea:focus {
     box-shadow: 0 6px 12px rgba(140,152,164,.075);
     border-radius: .75rem;
     overflow: hidden;
+    transition: 0.3s;
+}
+
+.bloc:hover {
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
 }
 
 .bloc-header {
@@ -67,10 +73,11 @@ header .search-field {
     border-radius: 8px;
     padding: 0 12px;
     transition: 0.3s;
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 header .search-field:hover, header .search-field:focus {
-    background-color: #eee;
+    background-color: rgba(235, 235, 235, 0.6);
     transition: 0.3s;
 }
 
@@ -177,4 +184,31 @@ header .search-field:hover, header .search-field:focus {
 
 .stats .show-more:hover {
     cursor: pointer;
+}
+
+@media screen and (max-width: 1439px ) {
+    .stats .top .left .stat {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 950px ) {
+    .stats .top {
+        flex-direction: column-reverse;
+    }
+
+    .stats .top .left, .stats .top .right {
+        width: 100%;
+    }
+
+    .stats .top .left .stat {
+        width: 250px;
+    }
+}
+
+@media screen and (max-width: 720px ) {
+    .stats .top .left .stat {
+        margin: 6px 0;
+        width: 100%;
+    }
 }
