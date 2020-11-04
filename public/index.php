@@ -1,16 +1,17 @@
 <?php
+
+use App\Controllers\HelloWorldController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../system/autoloader.php';
 
 $app = AppFactory::create();
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
+$app->get('/', function (Request $request, Response $response, array $args) {
+    $controller = new HelloWorldController();
+    return $controller->Index($request, $response, $args);
 });
 
 $app->run();
