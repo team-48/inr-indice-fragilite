@@ -1,1 +1,13 @@
+<<<<<<< HEAD
 .idea
+=======
+/* IDE */
+
+.vscode/
+.idea/
+
+/* COMPOSER */
+
+composer.phar
+vendor/
+>>>>>>> develop
