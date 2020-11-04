@@ -144,7 +144,6 @@ header .search-field:focus {
 
 .search-results {
     width: calc(100% + 26px);
-    border-radius: 0 0 0.75rem 0.75rem;
     overflow: hidden;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
@@ -182,6 +181,10 @@ header .search-field:focus {
 .stats .stats-header {
     display: flex;
     justify-content: space-between;
+}
+
+.stats .stats-header .btn {
+    display: none;
 }
 
 .stats .top {
