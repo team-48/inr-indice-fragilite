@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Domain\Services\Parser;
 
 class ParserService implements IParserService
@@ -15,10 +14,14 @@ class ParserService implements IParserService
 
     protected $delimiter;
 
-    public function __construct($csv = null, $delimiter = ";")
+    protected $inseeDept;
+
+    public function __construct($inseeDept = null, $delimiter = ";")
     {
-        if (strlen($csv) > 0) {
-            $this->setCsv($csv);
+        if (strlen($inseeDept) > 0) {
+            $this->setinseeDept($inseeDept);
+
+            $this->setCsv($this->inseeDept);
 
             $this->setDelimeter($delimiter);
 
@@ -26,9 +29,14 @@ class ParserService implements IParserService
         }
     }
 
-    public function setCsv($csv)
+    public function setinseeDept($inseeDept)
     {
-        $this->csv = $csv;
+        $this->inseeDept = $inseeDept;
+    }
+
+    public function setCsv($inseeDept)
+    {
+        $this->csv = "dept_list/{$inseeDept}.csv";
     }
 
     public function setDelimeter($delimiter)
@@ -46,9 +54,7 @@ class ParserService implements IParserService
         $fileHandle = fopen($this->getCsv(), "r");
         $filerow = 0;
 
-        // DEV NOTE : $filerow < 500 use to bypass file size limit
-        while (($row = fgetcsv($fileHandle, $this->limit, $this->delimiter)) && $filerow < 500 !== FALSE ) {
-            if ($row == 1) continue; // skip header
+        while (($row = fgetcsv($fileHandle, $this->limit, $this->delimiter)) !== FALSE ) {
             $this->data[$filerow] = $row;
             $filerow++;
         }
