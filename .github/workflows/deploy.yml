@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: contains(github.ref, 'refs/tags/')
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v1
