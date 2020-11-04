@@ -3,7 +3,6 @@
 
 namespace App\Domain\Services\Cities;
 
-
 use App\Domain\Repositories\ICitiesRepository;
 use App\Domain\Views\CityViewModel;
 

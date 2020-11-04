@@ -1,6 +1,9 @@
 <?php
 
-class Parser
+
+namespace App\Domain\Services\Parser;
+
+class ParserService implements IParserService
 {
     protected $csv;
 
@@ -44,7 +47,7 @@ class Parser
         $filerow = 0;
 
         // DEV NOTE : $filerow < 500 use to bypass file size limit
-        while (($row = fgetcsv($fileHandle, $this->limit, ";")) && $filerow < 500 !== FALSE ) {
+        while (($row = fgetcsv($fileHandle, $this->limit, $this->delimiter)) && $filerow < 500 !== FALSE ) {
             if ($row == 1) continue; // skip header
             $this->data[$filerow] = $row;
             $filerow++;
@@ -57,7 +60,7 @@ class Parser
         return $this->data;
     }
 
-    public function filter_by_name($value)
+    public function filter_by_name(int $value)
     {
         $rows = array();
 
@@ -71,7 +74,7 @@ class Parser
         return $rows;
     }
 
-    public function filter_by_com($value)
+    public function filter_by_comCode(int $value)
     {
         $rows = array();
 
