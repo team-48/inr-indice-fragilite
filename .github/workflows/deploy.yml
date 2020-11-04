@@ -3,9 +3,10 @@ name: CI
 on:
   push:
     branches: [ main ]
+    tags: 
+      - *
 jobs:
   deploy:
-    if: contains(github.ref, 'refs/tags/')
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v1
