@@ -18,6 +18,36 @@ input:focus, textarea:focus {
     color: #0052ea;
 }
 
+.center-vertically {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.btn {
+    height: 40px;
+    padding: 0 28px;
+    background-color: #0052ea;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(140,152,164,.075);
+    transition: 0.3s;
+}
+
+.btn:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
+}
+
+.btn p {
+    margin: 0;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+}
+
 .bloc {
     border: 1px solid #ddd;
     background-color: white;
@@ -131,6 +161,11 @@ header .search-field:hover, header .search-field:focus {
     text-overflow: ellipsis;
 }
 
+.stats .stats-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .stats .top {
     display: flex;
     justify-content: space-between;
@@ -215,7 +250,6 @@ header .search-field:hover, header .search-field:focus {
 }
 
 @media screen and (max-width: 720px ) {
-
     .search-results .result .name {
         width: 70%;
     }
