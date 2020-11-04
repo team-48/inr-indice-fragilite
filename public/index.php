@@ -4,14 +4,13 @@ use App\Controllers\CitySearchController;
 use App\Controllers\LandingController;
 use App\Controllers\StatsController;
 use App\Domain\Services\Cities\CitiesService;
+use App\Domain\Services\Parser\ParserService;
 use App\Infrastructure\Cities\CitiesRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-
-include 'domain/services/cities/Parser.php';
 
 require __DIR__ . '/../system/autoloader.php';
 

@@ -5,12 +5,12 @@ namespace App\Domain\Services\Parser;
 interface IParserService
 {
     /**
-     * @param int $value
+     * @param string $value
      */
-    public function filter_by_name(int $value);
+    public function filter_by_name(string $value);
 
     /**
-     * @param int $value
+     * @param string $value
      */
-    public function filter_by_comCode(int $value);
+    public function filter_by_comCode(string $value);
 }
