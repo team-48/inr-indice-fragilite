@@ -1,13 +1,26 @@
 export default class CityStatsContainer {
-    constructor(city) {
+    constructor() {
         this.container = document.querySelector('#city_statistic_container');
-        this.city = city;
+        this.update();
+    }
 
+    update(city = null) {
+        this.city = city;
         this.container.innerHTML = this.render();
     }
 
     render() {
-        return `<h1>${this.city.cityName} (${this.city.postalCode})</h1>
+        if (this.city != null) {
+            return `
+
+    <div class="stats-header">
+        <h1>${this.city.cityName} (${this.city.postalCode})</h1>
+        <div class="center-vertically">
+            <div class="btn" onclick="generatePDF()">
+                <p>Télécharger</p>
+            </div>
+        </div>
+    </div>
 
     <div class="top">
 
@@ -64,5 +77,12 @@ export default class CityStatsContainer {
     <div class="show-more">
         <p class="grey">En savoir plus</p>
     </div>`;
+        } else {
+            return `
+            <div class="no-cities">
+                <img src="/assets/images/fogg-203.png" alt="Aucun lieu sélectionné">
+            </div>`;
+        }
+
     }
 }

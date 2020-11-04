@@ -1,9 +1,10 @@
 import CityStatsContainer from "../stats/stats.component.js";
 
 export default class CityListContainer {
-    constructor(cities) {
+    constructor() {
         this.container = document.querySelector('#search_result_container');
-        this.cities = cities;
+        this.cities = [];
+        this.cityStatsComponent = new CityStatsContainer();
 
         this.container.innerHTML = this.render();
         this.afterViewInit();
@@ -14,12 +15,26 @@ export default class CityListContainer {
             const cityElement = document.querySelector(`#city-${index}`);
 
             cityElement.addEventListener('click', () => {
-                new CityStatsContainer(city);
+                this.update();
+                this.cityStatsComponent.update(city);
             })
         })
     }
 
+    update(cities = []) {
+        this.cities = cities;
+        this.container.innerHTML = this.render();
+        this.afterViewInit();
+    }
+
     render() {
-        return this.cities.map((city, index) => `<li id="city-${index}">${city.cityName}</li>`).join('')
+        if (this.cities.length > 0) {
+            return `<div class="search-results">` + this.cities.map((city, index) => `
+            <div class="result" id="city-${index}">
+                <p class="name">${city.cityName}</p>
+                <p class="postal-code grey">${city.postalCode}</p>
+            </div>`).join('') + `</div>`;
+        }
+        return ``;
     }
 }
