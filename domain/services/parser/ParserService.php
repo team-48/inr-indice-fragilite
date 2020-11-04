@@ -16,15 +16,17 @@ class ParserService implements IParserService
 
     protected $inseeDept;
 
+    protected $comCodeColumnIndex = 10;
+
+    protected $cityNameColumnIndex = 0;
+
     public function __construct($inseeDept = null, $delimiter = ";")
     {
         if (strlen($inseeDept) > 0) {
             $this->setinseeDept($inseeDept);
-
             $this->setCsv($this->inseeDept);
-
             $this->setDelimeter($delimiter);
-
+            $this->setHeaders();
             $this->parse();
         }
     }
@@ -34,9 +36,22 @@ class ParserService implements IParserService
         $this->inseeDept = $inseeDept;
     }
 
+    public function setHeaders()
+    {
+        $fileHandle = fopen("infrastructure/cities/data/dept_list/headers.csv", "r");
+        $row = fgetcsv($fileHandle, $this->limit, $this->delimiter);
+        $this->headers = $row;
+        fclose($fileHandle);
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
     public function setCsv($inseeDept)
     {
-        $this->csv = "dept_list/{$inseeDept}.csv";
+        $this->csv = "infrastructure/cities/data/dept_list/{$inseeDept}.csv";
     }
 
     public function setDelimeter($delimiter)
@@ -52,18 +67,13 @@ class ParserService implements IParserService
     public function parse()
     {
         $fileHandle = fopen($this->getCsv(), "r");
-        $filerow = 0;
+        $rowIndex = 0;
 
         while (($row = fgetcsv($fileHandle, $this->limit, $this->delimiter)) !== FALSE ) {
-            $this->data[$filerow] = $row;
-            $filerow++;
+            $this->data[$rowIndex] = $row;
+            $rowIndex++;
         }
         fclose($fileHandle);
-    }
-
-    public function all()
-    {
-        return $this->data;
     }
 
     public function filterByName(string $value)
@@ -71,8 +81,7 @@ class ParserService implements IParserService
         $rows = array();
 
         foreach ($this->data as $row) {
-            if (strcmp($row[0], $value) === 0 ){
-                print_r($row);
+            if (strcmp($row[$this->cityNameColumnIndex], $value) === 0 ){
                 array_push($rows, $row);
             }
         }
@@ -80,13 +89,27 @@ class ParserService implements IParserService
         return $rows;
     }
 
+    public function formatRowWithHeader(array $row) {
+        $arr = array();
+        $i = 0;
+
+        foreach ($row as $elt) {
+            $arr[$this->getHeaders()[$i]] = $elt;
+            $i++;
+        }
+
+        return $arr;
+    }
+
     public function filterByComCode(string $value)
     {
+        if ($value[0] === "0") $value = substr($value, 1);
+
         $rows = array();
 
         foreach ($this->data as $row) {
-            if (strcmp($row[10], $value) === 0 ){
-                array_push($rows, $row);
+            if (strcmp($row[$this->comCodeColumnIndex], $value) === 0 ){
+                array_push($rows, $this->formatRowWithHeader($row));
             }
         }
 

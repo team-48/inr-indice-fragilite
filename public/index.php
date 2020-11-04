@@ -3,6 +3,7 @@
 use App\Controllers\CitySearchController;
 use App\Controllers\LandingController;
 use App\Controllers\StatsController;
+use App\Controllers\CityStatsController;
 use App\Domain\Services\Cities\CitiesService;
 use App\Domain\Services\Parser\ParserService;
 use App\Infrastructure\Cities\CitiesRepository;
@@ -35,11 +36,9 @@ $app->get("/cities", function (Request $request, Response $response, array $args
     return $controller->getCitiesByPostalCode($request, $response, $args);
 });
 
-$app->get("/stats", function (Request $request, Response $response, array $args) {
-    // Appel à getCitiesByPostalCode pour récupérer la ville avec le code postal
-    // Donc on a : Ville = [codePostal, codeCommune, nom]
-    // Une fois qu'on a la ville, on prend le code commune et on lance un filterByComCode(codeCommune)
-    // On renvoie le resultat de filterByComCode au format JSON
+$app->get("/stats/{communeCod}", function (Request $request, Response $response, array $args) {
+    $controller = new CityStatsController();
+    return $controller->getCitiesByComCode($request, $response, $args);
 });
 
 $app->run();
