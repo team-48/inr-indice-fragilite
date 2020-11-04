@@ -2,6 +2,7 @@
 
 use App\Controllers\CitySearchController;
 use App\Controllers\LandingController;
+use App\Controllers\StatsController;
 use App\Domain\Services\Cities\CitiesService;
 use App\Infrastructure\Cities\CitiesRepository;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -20,7 +21,7 @@ $twig = Twig::create(__DIR__ . '/../templates');
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
 
-$app->get('/{postalCode}', function (Request $request, Response $response, array $args)  {
+$app->get('/', function (Request $request, Response $response, array $args)  {
     $controller = new LandingController();
     return $controller->Index($request, $response, $args);
 });

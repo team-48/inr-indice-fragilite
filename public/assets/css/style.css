@@ -3,7 +3,7 @@ html, body {
     width: 100%;
     margin: 0;
     background-color: white;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
 }
 
 input:focus, textarea:focus {
@@ -72,69 +72,4 @@ header .search-field {
 header .search-field:hover, header .search-field:focus {
     background-color: #eee;
     transition: 0.3s;
-}
-
-.stats {
-    width: 80%;
-    margin: 70px auto 0;
-}
-
-.stats .top {
-    display: flex;
-    justify-content: space-between;
-}
-
-.stats .top .left {
-    width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.stats .top .left .stat {
-    width: 250px;
-    height: 100px;
-    padding: 6px 12px;
-    margin: 6px;
-}
-
-.stats .top .left .stat .number {
-    margin: 0;
-    font-size: 28px;
-    transition: 0.3s;
-}
-
-.stats .top .left .stat:hover .number {
-    color: #0052ea;
-    transition: 0.3s;
-}
-
-.stats .top .right {
-    width: 48%;
-}
-
-.stats .top .right .map {
-    margin-top: 6px;
-}
-
-.stats .top .right .map img {
-    width: 100%;
-}
-
-.stats .show-more {
-    width: 150px;
-    height: 28px;
-    border: 1px solid #ddd;
-    border-radius: 14px;
-    margin: 0 auto;
-}
-
-.stats .show-more p {
-    margin: 0;
-    text-align: center;
-    font-size: 13px;
-    line-height: 28px;
-}
-
-.stats .show-more:hover {
-    cursor: pointer;
 }
