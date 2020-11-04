@@ -4,11 +4,12 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Views\Twig;
 
 class HelloWorldController
 {
     public function Index(Request $request, Response $response, array $args): Response {
-        $response->getBody()->write("Hello World!");
-        return $response;
+        $view = Twig::fromRequest($request);
+        return $view->render($response, 'landing.twig');
     }
 }
