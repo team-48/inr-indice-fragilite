@@ -4,12 +4,9 @@ on:
   push:
     branches: [ main ]
     tags: 
-      - 0.*
-      - 1.*
-      - 2.*
+      - *
 jobs:
   deploy:
-    if: contains(github.ref, 'refs/tags/')
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v1
