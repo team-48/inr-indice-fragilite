@@ -18,12 +18,48 @@ input:focus, textarea:focus {
     color: #0052ea;
 }
 
+.center-vertically {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.btn {
+    height: 40px;
+    padding: 0 28px;
+    background-color: #0052ea;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(140,152,164,.075);
+    transition: 0.3s;
+}
+
+.btn:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
+}
+
+.btn p {
+    margin: 0;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+}
+
 .bloc {
     border: 1px solid #ddd;
     background-color: white;
     box-shadow: 0 6px 12px rgba(140,152,164,.075);
     border-radius: .75rem;
     overflow: hidden;
+    transition: 0.3s;
+}
+
+.bloc:hover {
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
 }
 
 .bloc-header {
@@ -67,16 +103,22 @@ header .search-field {
     border-radius: 8px;
     padding: 0 12px;
     transition: 0.3s;
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 header .search-field:hover, header .search-field:focus {
-    background-color: #eee;
+    background-color: rgba(235, 235, 235, 0.6);
     transition: 0.3s;
 }
 
 .no-cities {
     width: 60%;
-    margin: 0 auto;
+    height: calc(100vh - 60px);
+    margin: 60px auto 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
 }
 
 .no-cities img {
@@ -117,6 +159,11 @@ header .search-field:hover, header .search-field:focus {
     width: 40%;
     max-width: 350px;
     text-overflow: ellipsis;
+}
+
+.stats .stats-header {
+    display: flex;
+    justify-content: space-between;
 }
 
 .stats .top {
@@ -166,6 +213,7 @@ header .search-field:hover, header .search-field:focus {
     border: 1px solid #ddd;
     border-radius: 14px;
     margin: 0 auto;
+    transition: 0.3s;
 }
 
 .stats .show-more p {
@@ -177,4 +225,37 @@ header .search-field:hover, header .search-field:focus {
 
 .stats .show-more:hover {
     cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.125);
+}
+
+@media screen and (max-width: 1439px ) {
+    .stats .top .left .stat {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 950px ) {
+    .stats .top {
+        flex-direction: column-reverse;
+    }
+
+    .stats .top .left, .stats .top .right {
+        width: 100%;
+    }
+
+    .stats .top .left .stat {
+        width: 250px;
+    }
+}
+
+@media screen and (max-width: 720px ) {
+    .search-results .result .name {
+        width: 70%;
+    }
+
+    .stats .top .left .stat {
+        margin: 6px 0;
+        width: 100%;
+    }
 }
