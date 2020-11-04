@@ -11,6 +11,8 @@ use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 
+include 'domain/services/cities/Parser.php';
+
 require __DIR__ . '/../system/autoloader.php';
 
 $app = AppFactory::create();
