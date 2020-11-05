@@ -252,7 +252,7 @@ export default class CityStatsContainer {
                                             </tr>
                                             <tr>
                                                 <td>Score global</td>
-                                                <td>${parseFloat(bloc['SCORE GLOBAL region * ']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['SCORE GLOBAL region 1']).toFixed(2)}</td>
                                             </tr>
                                         </tbody>
                                     </table>
