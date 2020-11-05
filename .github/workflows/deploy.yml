@@ -2,17 +2,25 @@ name: CI
 
 on:
   push:
-    tags: 
+    tags:
       - '*'
+
 jobs:
-  deploy:
-    runs-on: [ubuntu-latest]
+  build:
+    runs-on: [ ubuntu-latest ]
+
     steps:
       - uses: actions/checkout@v1
-      - name: Minify JS and CSS
-        uses: nizarmah/auto-minify@master
-        with:
-          js-engine: uglify-js
+
+      - name: Install dependencies
+        uses: php-actions/composer@v2
+
+  deploy:
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - uses: actions/checkout@v1
+
       - name: SSH Server Deploy
         uses: kostya-ten/ssh-server-deploy@v3
         with:
@@ -22,5 +30,3 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           scp_source: ./*
           scp_target: /var/www/inr-indice-fragilite
-          after_script: |
-            cd /var/www/inr-indice-fragilite && composer install
