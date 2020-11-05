@@ -50,7 +50,7 @@ export default class CityStatsContainer {
         let moyenneAcces = 0;
         let moyenneCompetence = 0;
         let moyenneScoreGlobal = 0;
-        this.cityStats.forEach(function(stat) {
+        this.cityStats['cities'].forEach(function(stat) {
             moyenneInterfaceNumeriques += parseFloat(stat['ACCÈS AUX INTERFACES NUMERIQUES region 1']);
             moyenneAccesInfo += parseFloat(stat['ACCES A L\'INFORMATION region 1']);
             moyenneCompetencesAdmin += parseFloat(stat['COMPETENCES ADMINISTATIVES region 1']);
@@ -60,29 +60,43 @@ export default class CityStatsContainer {
             moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region 1']);
         });
         return {
-            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats.length,
-            'moyenneAccesInfo': moyenneAccesInfo / this.cityStats.length,
-            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / this.cityStats.length,
-            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / this.cityStats.length,
-            'moyenneAcces': moyenneAcces / this.cityStats.length,
-            'moyenneCompetences': moyenneCompetence / this.cityStats.length,
-            'moyenneScoreGlobal': moyenneScoreGlobal / this.cityStats.length
+            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats['cities'].length,
+            'moyenneAccesInfo': moyenneAccesInfo / this.cityStats['cities'].length,
+            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / this.cityStats['cities'].length,
+            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / this.cityStats['cities'].length,
+            'moyenneAcces': moyenneAcces / this.cityStats['cities'].length,
+            'moyenneCompetences': moyenneCompetence / this.cityStats['cities'].length,
+            'moyenneScoreGlobal': moyenneScoreGlobal / this.cityStats['cities'].length
         }
     }
 
-    colorData(data) {
-        const max = 120;
+    colorData(data, max) {
         const step = (max - 100) / 4;
+        console.log(max);
         if (data <= 100 + step) {
             return '#40b01e';
-        } else if (data > 100 + step && data <= 100 + 2 * step) {
+        } else if (data > 100 + step && data <= 100 + step) {
             return '#a4ab27';
-        } else if (data > 100 + 2 * step && data <= 100 + 3 * step) {
+        } else if (data > 100 + step && data <= 100 + 2 * step) {
             return '#d19e11';
-        } else if (data > 100 + 3 * step && data <= 100 + 4 * step) {
+        } else if (data > 100 + 2 * step && data <= 100 + 3 * step) {
             return '#d16b11';
         } else {
             return '#d11111';
+        }
+    }
+
+    __colorData(data, max) {
+        const med = (max + 100) / 2
+        if (data < 100) {
+            return("rgb(0 , 255, 0)");
+        }
+        if (100 <= data < med) {
+            console.log('rgb(' + (data - 100) * 255 / (med - 100) + ', ' + 255 - (data - 100) * 255 / (med - 100) + ',' + 0 + ')');
+            return ("rgb(' + (data - 100) * 255 / (med - 100) + ', ' + 255 - (data - 100) * 255 / (med - 100) + ',' + 0 + ')");
+        } else {
+            console.log('rgb(0,' + 255 - (data - med) * 255 / ((max - med)) + ', ' + (data - med) * 255 / ((max - med)) + ')');
+            return ("rgb(0,' + 255 - (data - med) * 255 / ((max - med)) + ', ' + (data - med) * 255 / ((max - med)) + ')");
         }
     }
 
@@ -109,49 +123,49 @@ export default class CityStatsContainer {
                         <div class="left">
                             <div class="bloc stat">
                                 <p>Accès aux interfaces numériques</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'], this.cityStats['scoring']['digitalInterfacesAccess'])}">
                                     ${averages['moyenneInterfaceNumerique'].toFixed(2)}
                                 </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Accès à l'information</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'], this.cityStats['scoring']['informationAccess'])}">
                                     ${averages['moyenneAccesInfo'].toFixed(2)}
                                 </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Compétences administratives</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'], this.cityStats['scoring']['administrativeSkills'])}">
                                     ${averages['moyenneCompetencesAdmin'].toFixed(2)}
                                 </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Compétences numériques / scolaires</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'], this.cityStats['scoring']['schoolSkills'])}">
                                     ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
                                 </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Accès</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAcces'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAcces'], this.cityStats['scoring']['access'])}">
                                     ${averages['moyenneAcces'].toFixed(2)}
                                 </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Compétences</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetences'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetences'], this.cityStats['scoring']['skills'])}">
                                     ${averages['moyenneCompetences'].toFixed(2)}
                                 </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Score global</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'])}">
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'], this.cityStats['scoring']['department'])}">
                                     ${averages['moyenneScoreGlobal'].toFixed(2)}
                                 </h1>
                             </div>
@@ -178,7 +192,7 @@ export default class CityStatsContainer {
                     
                         <h2>Quartiers</h2>
                         <p>Ces statistiques concernent les quartiers de cette agglomération</p> 
-                         `+ this.cityStats.map((bloc, index) => `
+                         `+ this.cityStats['cities'].map((bloc, index) => `
                             <div class="bloc">
                                 <div class="bloc-header">
                                     <h2>${bloc['Nom Iris']}</h2>
