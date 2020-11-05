@@ -106,9 +106,9 @@ class ParserService implements IParserService
 
     private function computeScoring(array $headers, array $cities, string $query_type = "region", string $departmentCode = null)
     {
-        if ($query_type === "department") {
+        if (strcmp($query_type, "department") === 0){
             $cities = array_filter($cities, function ($var) use ($departmentCode, $headers) {
-                return ($var[$this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT)] == $departmentCode);
+                return (strcmp($var[$this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT)], $departmentCode) === 0);
             });
         }
 
