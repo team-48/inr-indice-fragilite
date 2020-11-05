@@ -18,6 +18,16 @@ input:focus, textarea:focus {
     color: #0052ea;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .center-vertically {
     display: flex;
     justify-content: center;
