@@ -186,6 +186,39 @@ header .search-field:focus {
     justify-content: space-between;
 }
 
+.stats .switch-comparison {
+    width: fit-content;
+    display: flex;
+    background-color: #eee;
+    border-radius: 0.75rem;
+    margin: 10px 0;
+}
+
+.stats .switch-comparison .switch-btn {
+    padding: 6px 20px;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+.stats .switch-comparison .switch-btn:first-child {
+    margin-right: 10px;
+}
+
+.stats .switch-comparison .switch-btn p {
+    color: #8c98a4;
+    margin: 0;
+}
+
+.stats .switch-comparison .switch-btn-active {
+    background-color: #0052ea;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
+}
+
+.stats .switch-comparison .switch-btn-active p {
+    color: white;
+}
+
 .stats .top {
     display: flex;
     justify-content: space-between;

@@ -77,6 +77,15 @@ export default class CityStatsContainer {
                         <h1>${this.city.cityName} (${this.city.postalCode})</h1>
                         <div class="center-vertically" id="generate-pdf-btn-container"></div>
                     </div>
+                    
+                    <div class="switch-comparison">
+                        <div class="switch-btn switch-btn-active">
+                            <p>Région</p>   
+                        </div>
+                        <div class="switch-btn">
+                            <p>Département</p>   
+                        </div>
+                    </div>
                 
                     <div class="top">
                 
