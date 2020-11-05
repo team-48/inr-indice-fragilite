@@ -10,8 +10,7 @@ export default class GeneratePdfBtnComponent {
     }
 
     generatePDF() {
-        alert("PDF");
-        const element = document.querySelector('#stats');
+        const element = document.getElementById('stats');
         html2pdf(element);
     }
 
