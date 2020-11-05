@@ -85,6 +85,7 @@ header {
     padding: 0 10%;
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
+    z-index: 10;
 }
 
 header .logo {
@@ -183,10 +184,6 @@ header .search-field:focus {
     justify-content: space-between;
 }
 
-.stats .stats-header .btn {
-    display: none;
-}
-
 .stats .top {
     display: flex;
     justify-content: space-between;
@@ -229,11 +226,12 @@ header .search-field:focus {
 }
 
 .stats .show-more {
+    display: none;
     width: 150px;
     height: 28px;
     border: 1px solid #ddd;
     border-radius: 14px;
-    margin: 0 auto;
+    margin: 0 auto 20px;
     transition: 0.3s;
 }
 
@@ -248,6 +246,39 @@ header .search-field:focus {
     cursor: pointer;
     transition: 0.3s;
     box-shadow: 0 6px 12px rgba(140,152,164,.125);
+}
+
+.stats .more-stats {
+    width: 100%;
+    padding-bottom: 20px;
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.stats .more-stats .bloc {
+    margin: 0 10px 10px;
+}
+
+.stats .more-stats .bloc .bloc-content {
+    width: 100%;
+}
+
+.stats .more-stats .bloc .bloc-content table {
+    width: 100%;
+}
+
+.stats .more-stats .bloc .bloc-content table td {
+    color: #677788;
+    padding: 1rem 1.3125rem;
+    vertical-align: top;
+    border-top: .0625rem solid rgba(231,234,243,.7);
+}
+
+.stats .more-stats-expanded {
+    transform: scaleY(1);
+    transition: 0.5s;
 }
 
 @media screen and (max-width: 1439px ) {
