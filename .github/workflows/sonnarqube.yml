@@ -17,7 +17,8 @@ jobs:
         uses: nizarmah/auto-minify@master
         with:
           directory: 'public/assets/js'
-          output: 'main.min.js'         
+          output: 'main.min.js'
+          sourceType: 'module'         
   
   build:
     runs-on: ubuntu-latest
