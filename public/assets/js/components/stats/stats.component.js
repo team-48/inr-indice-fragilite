@@ -70,7 +70,7 @@ export default class CityStatsContainer {
         }
     }
 
-    colorData(data, max) {
+    __colorData(data, max) {
         const step = (max - 100) / 4;
         console.log(max);
         if (data <= 100 + step) {
@@ -86,18 +86,19 @@ export default class CityStatsContainer {
         }
     }
 
-    __colorData(data, max) {
+    colorData(data, max) {
         const med = (max + 100) / 2
+        let r = 0, g = 0, b = 0;
         if (data < 100) {
-            return("rgb(0 , 255, 0)");
-        }
-        if (100 <= data < med) {
-            console.log('rgb(' + (data - 100) * 255 / (med - 100) + ', ' + 255 - (data - 100) * 255 / (med - 100) + ',' + 0 + ')');
-            return ("rgb(' + (data - 100) * 255 / (med - 100) + ', ' + 255 - (data - 100) * 255 / (med - 100) + ',' + 0 + ')");
+            g = 200;
+        } else if (100 <= data < med) {
+            r = (data - 100) * 255 / (med - 100);
+            g = 200 - (data - 100) * 200 / (med - 100);
         } else {
-            console.log('rgb(0,' + 255 - (data - med) * 255 / ((max - med)) + ', ' + (data - med) * 255 / ((max - med)) + ')');
-            return ("rgb(0,' + 255 - (data - med) * 255 / ((max - med)) + ', ' + (data - med) * 255 / ((max - med)) + ')");
+            g = 200 - (data - med) * 200 / ((max - med));
+            b = (data - med) * 255 / ((max - med));
         }
+        return ('rgb(' + r + ', '+ g +', ' + b + ')');
     }
 
     render() {
@@ -109,65 +110,88 @@ export default class CityStatsContainer {
                         <div class="center-vertically" id="generate-pdf-btn-container"></div>
                     </div>
                     
-                    <div class="switch-comparison">
-                        <div class="switch-btn">
-                            <p>Région</p>   
+                    <div class="toolbar">
+                        <div class="switch-comparison">
+                            <div class="switch-btn">
+                                <p>Région</p>   
+                            </div>
+                            <div class="switch-btn switch-btn-active">
+                                <p>Département</p>   
+                            </div>
                         </div>
-                        <div class="switch-btn switch-btn-active">
-                            <p>Département</p>   
+                        <div class="gradient-container">
+                            <div class="gradient"></div>
+                            <div id="gradient-explanations">
+                                <p>?</p>
+                            </div>
+                            
+                            <div class="bloc" id="gradient-explanations-content">
+                                <p>
+                                Les données sont collorées afin d'indiquer la qualité des indicateurs pour la localité
+                                données par rapport au département ou à la région : un chiffre vert représente une donnée
+                                meilleure que la majorité du département ou de la région, tandis qu'un chiffre rouge illustre
+                                un indicateur médiocre en comparaison aux autres localités concernées.
+                                </p>               
+                            </div>
                         </div>
                     </div>
                 
                     <div class="top">
                 
                         <div class="left">
-                            <div class="bloc stat">
-                                <p>Accès aux interfaces numériques</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'], this.cityStats['scoring']['digitalInterfacesAccess'])}">
-                                    ${averages['moyenneInterfaceNumerique'].toFixed(2)}
-                                </h1>
-                            </div>
-                
-                            <div class="bloc stat">
-                                <p>Accès à l'information</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'], this.cityStats['scoring']['informationAccess'])}">
-                                    ${averages['moyenneAccesInfo'].toFixed(2)}
-                                </h1>
-                            </div>
-                
-                            <div class="bloc stat">
-                                <p>Compétences administratives</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'], this.cityStats['scoring']['administrativeSkills'])}">
-                                    ${averages['moyenneCompetencesAdmin'].toFixed(2)}
-                                </h1>
-                            </div>
-                
-                            <div class="bloc stat">
-                                <p>Compétences numériques / scolaires</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'], this.cityStats['scoring']['schoolSkills'])}">
-                                    ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
-                                </h1>
-                            </div>
-                
-                            <div class="bloc stat">
-                                <p>Accès</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAcces'], this.cityStats['scoring']['access'])}">
-                                    ${averages['moyenneAcces'].toFixed(2)}
-                                </h1>
-                            </div>
-                
-                            <div class="bloc stat">
-                                <p>Compétences</p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetences'], this.cityStats['scoring']['skills'])}">
-                                    ${averages['moyenneCompetences'].toFixed(2)}
-                                </h1>
-                            </div>
-                
-                            <div class="bloc stat">
-                                <p>Score global</p>
+                            <div class="bloc stat stat-full">
+                                <p><b>Score global</b></p>
                                 <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'], this.cityStats['scoring']['department'])}">
                                     ${averages['moyenneScoreGlobal'].toFixed(2)}
                                 </h1>
+                            </div>
+                            
+                            <div class="bloc stat stat-column">
+                                <div class="bloc-header">
+                                    <h2>Accès</h2>
+                                    <h1 class="number" style="color: ${this.colorData(averages['moyenneAcces'], this.cityStats['scoring']['access'])}">
+                                        ${averages['moyenneAcces'].toFixed(2)}
+                                    </h1>
+                                </div>
+                                
+                                <div class="bloc stat">
+                                    <p>Accès aux interfaces numériques</p>
+                                    <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'], this.cityStats['scoring']['digitalInterfacesAccess'])}">
+                                        ${averages['moyenneInterfaceNumerique'].toFixed(2)}
+                                    </h1>
+                                </div>
+                    
+                                <div class="bloc stat">
+                                    <p>Accès à l'information</p>
+                                    <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'], this.cityStats['scoring']['informationAccess'])}">
+                                        ${averages['moyenneAccesInfo'].toFixed(2)}
+                                    </h1>
+                                </div>
+                                
+                            </div>
+                
+                            <div class="bloc stat stat-column">
+                                <div class="bloc-header">
+                                    <h2>Compétences</h2>
+                                    <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetences'], this.cityStats['scoring']['skills'])}">
+                                        ${averages['moyenneCompetences'].toFixed(2)}
+                                    </h1>
+                                </div>
+                                
+                                <div class="bloc stat">
+                                    <p>Compétences administratives</p>
+                                    <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'], this.cityStats['scoring']['administrativeSkills'])}">
+                                        ${averages['moyenneCompetencesAdmin'].toFixed(2)}
+                                    </h1>
+                                </div>
+                    
+                                <div class="bloc stat">
+                                    <p>Compétences numériques / scolaires</p>
+                                    <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'], this.cityStats['scoring']['schoolSkills'])}">
+                                        ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
+                                    </h1>
+                                </div>
+                                
                             </div>
                         </div>
                 

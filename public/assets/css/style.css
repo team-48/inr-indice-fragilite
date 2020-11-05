@@ -237,12 +237,72 @@ header #search_form_loader #search-field-loader {
     justify-content: space-between;
 }
 
-.stats .switch-comparison {
+.stats .toolbar {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats .toolbar .switch-comparison {
     width: fit-content;
     display: flex;
     background-color: #eee;
     border-radius: 0.75rem;
     margin: 10px 0;
+}
+
+.stats .toolbar .gradient-container {
+    position: relative;
+    display: flex;
+    width: 120px;
+    height: 20px;
+}
+
+.stats .toolbar .gradient-container .gradient {
+    width: 80px;
+    height: 10px;
+    margin-top: 20px;
+    background: linear-gradient(to right, rgb(0, 200, 0), rgb(255, 0, 0));
+    border-radius: 0.75rem;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations {
+    display: block;
+    font-size: 12px;
+    border: 1px solid #aaa;
+    margin: 16px 0 0 16px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations p {
+    margin: 0;
+    color: #aaa;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations-content {
+    display: none;
+    position: absolute;
+    right: -300px;
+    width: 300px;
+    background: white;
+    border-radius: 0.75rem;
+    z-index: 3;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations-content p {
+    margin: 12px;
+    line-height: 1.5;
+    font-size: 13px;
+    color: #677788;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations:hover ~ #gradient-explanations-content {
+    display: block;
 }
 
 .stats .switch-comparison .switch-btn {
@@ -279,14 +339,24 @@ header #search_form_loader #search-field-loader {
     width: 50%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .stats .top .left .stat {
     position: relative;
     width: 250px;
-    height: 100px;
+    min-height: 100px;
     padding: 6px 12px;
     margin: 6px;
+}
+
+.stats .top .left .stat-full {
+    width: 100%;
+}
+
+.stats .top .left .stat-column {
+    width: 47%;
+    padding: 0;
 }
 
 .stats .top .left .stat .number {
@@ -297,6 +367,25 @@ header #search_form_loader #search-field-loader {
     margin: 0;
     font-size: 28px;
     transition: 0.3s;
+}
+
+.stats .top .left .stat-full .number {
+    font-size: 42px;
+}
+
+.stats .top .left .stat-column .number {
+    bottom: auto;
+    top: 10px;
+}
+
+.stats .top .left .stat-column .stat {
+    width: 86%;
+    margin: 6px auto;
+}
+
+.stats .top .left .stat-column .stat .number {
+    bottom: 10px;
+    top: auto;
 }
 
 .stats .top .left .stat .number-good {
