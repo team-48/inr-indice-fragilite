@@ -7,7 +7,7 @@ use App\Domain\Views\CityStatsScoring;
 
 class ParserService implements IParserService
 {
-    private static int $COLUMN_CITY_CODE = 7;
+    private static int $COLUMN_CITY_CODE = 8;
     private static int $COLUMN_CITY_NAME = 0;
     private static string $COLUMN_CITY_DEPARTMENT_SCORE = "SCORE GLOBAL departement 1";
 
