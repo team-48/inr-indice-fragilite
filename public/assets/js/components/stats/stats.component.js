@@ -73,10 +73,7 @@ export default class CityStatsContainer {
     colorData(data) {
         const max = 120;
         const step = (max - 100) / 4;
-        if (data <= 100) {
-            return '#000';
-        }
-        else if (data > 100 && data <= 100 + step) {
+        if (data <= 100 + step) {
             return '#40b01e';
         } else if (data > 100 + step && data <= 100 + 2 * step) {
             return '#a4ab27';
@@ -98,10 +95,10 @@ export default class CityStatsContainer {
                     </div>
                     
                     <div class="switch-comparison">
-                        <div class="switch-btn switch-btn-active">
+                        <div class="switch-btn">
                             <p>Région</p>   
                         </div>
-                        <div class="switch-btn">
+                        <div class="switch-btn switch-btn-active">
                             <p>Département</p>   
                         </div>
                     </div>
