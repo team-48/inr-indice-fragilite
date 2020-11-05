@@ -15,8 +15,18 @@ export default class CityStatsContainer {
             if (this.city != null) {
                 this.generatePDFBtn = new GeneratePdfBtnComponent();
                 this.generatePDFBtn.update();
+                this.afterViewInit();
             }
         });
+    }
+
+    afterViewInit() {
+        const showMoreBtn = document.querySelector(`#show-more`);
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', () => {
+                document.getElementById('more-stats').classList.add("more-stats-expanded");
+            });
+        }
     }
 
     loadCity(onCityLoaded) {
@@ -122,10 +132,65 @@ export default class CityStatsContainer {
         </div>
 
     </div>
+    
+    <div class="more-stats" id="more-stats">
+    
+        <h2>Quartiers</h2>
+        <p>Ces statistiques concernent les quartiers de cette agglomération</p> 
+         `+ this.cityStats.map((bloc, index) => `
+            <div class="bloc">
+                <div class="bloc-header">
+                    <h2>${bloc['Nom Iris']}</h2>
+                </div>
+                <div class="bloc-content">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Code Iris</td>
+                                <td>${bloc['Iris']}</td>
+                            </tr>
+                            <tr>
+                                <td>Type Iris</td>
+                                <td>${bloc['Type Iris']}</td>
+                            </tr>
+                            <tr>
+                                <td>Accès à l'information</td>
+                                <td>${parseFloat(bloc['ACCES A L\'INFORMATION region 1']).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Accès aux interfaces numériques</td>
+                                <td>${parseFloat(bloc['ACCÈS AUX INTERFACES NUMERIQUES region 1']).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Compétences administratives</td>
+                                <td>${parseFloat(bloc['COMPETENCES ADMINISTATIVES region 1']).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Compétences numériques et scolaires</td>
+                                <td>${parseFloat(bloc['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Score global accès</td>
+                                <td>${parseFloat(bloc['GLOBAL ACCES region 1']).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Score global compétences</td>
+                                <td>${parseFloat(bloc['GLOBAL COMPETENCES region 1']).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Score global</td>
+                                <td>${parseFloat(bloc['SCORE GLOBAL region * ']).toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>`).join('') +`
+    </div>
 
-    <div class="show-more">
+    <div class="show-more" id="show-more">
         <p class="grey">En savoir plus</p>
-    </div>`;
+    </div>
+`;
         } else {
             return `
             <div class="no-cities">
