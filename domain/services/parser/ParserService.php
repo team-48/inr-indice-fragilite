@@ -103,7 +103,9 @@ class ParserService implements IParserService
 
     public function filterByComCode(string $value)
     {
-        if ($value[0] === "0") $value = substr($value, 1);
+        if ($value[0] === "0") {
+            $value = substr($value, 1);
+        }
 
         $rows = array();
 
