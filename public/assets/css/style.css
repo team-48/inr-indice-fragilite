@@ -226,6 +226,7 @@ header .search-field:focus {
 }
 
 .stats .show-more {
+    display: none;
     width: 150px;
     height: 28px;
     border: 1px solid #ddd;
