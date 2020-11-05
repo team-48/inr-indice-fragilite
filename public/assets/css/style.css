@@ -251,6 +251,31 @@ header #search_form_loader #search-field-loader {
     margin: 10px 0;
 }
 
+.stats .switch-comparison .switch-btn {
+    padding: 6px 20px;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+.stats .switch-comparison .switch-btn:first-child {
+    margin-right: 10px;
+}
+
+.stats .switch-comparison .switch-btn p {
+    color: #8c98a4;
+    margin: 0;
+}
+
+.stats .switch-comparison .switch-btn-active {
+    background-color: #0052ea;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
+}
+
+.stats .switch-comparison .switch-btn-active p {
+    color: white;
+}
+
 .stats .toolbar .gradient-container {
     position: relative;
     display: flex;
@@ -303,31 +328,6 @@ header #search_form_loader #search-field-loader {
 
 .stats .toolbar .gradient-container #gradient-explanations:hover ~ #gradient-explanations-content {
     display: block;
-}
-
-.stats .switch-comparison .switch-btn {
-    padding: 6px 20px;
-    cursor: pointer;
-    border-radius: 0.25rem;
-}
-
-.stats .switch-comparison .switch-btn:first-child {
-    margin-right: 10px;
-}
-
-.stats .switch-comparison .switch-btn p {
-    color: #8c98a4;
-    margin: 0;
-}
-
-.stats .switch-comparison .switch-btn-active {
-    background-color: #0052ea;
-    transition: 0.3s;
-    box-shadow: 0 6px 12px rgba(140,152,164,.325);
-}
-
-.stats .switch-comparison .switch-btn-active p {
-    color: white;
 }
 
 .stats .top {
