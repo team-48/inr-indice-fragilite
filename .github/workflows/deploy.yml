@@ -6,22 +6,18 @@ on:
       - '*'
 
 jobs:
-  build:
-    runs-on: [ ubuntu-latest ]
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Install dependencies
-        uses: php-actions/composer@v2
-      - name: Minify Action
-        uses: anthonyftwang/minify-action@v1
   deploy:
     runs-on: [ ubuntu-latest ]
 
     steps:
       - uses: actions/checkout@v1
-
+      
+      - name: Install dependencies
+        uses: php-actions/composer@v2
+        
+      - name: Minify Action
+        uses: anthonyftwang/minify-action@v1
+        
       - name: SSH Server Deploy
         uses: kostya-ten/ssh-server-deploy@v3
         with:
