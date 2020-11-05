@@ -57,7 +57,9 @@ class ParserService implements IParserService
      */
     private function filterCityByCityCode(array $cities, string $value)
     {
-        if ($value[0] === "0") $value = substr($value, 1);
+        if ($value[0] === "0") {
+            $value = substr($value, 1);
+        }
 
         $headers = $this->statisticsRepository->getStatsHeader();
         $filteredCities = array();

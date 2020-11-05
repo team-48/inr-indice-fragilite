@@ -30,7 +30,7 @@ class CityStatsController
 
         $cityStats = $this->parserService->getCityStatisticsByCityCode($comCode);
 
-        $response->getBody()->write(json_encode($cityStats));
+        $response->getBody()->write(json_encode($cityStats, JSON_UNESCAPED_UNICODE));
         return $response->withAddedHeader('Content-Type', 'application/json');
     }
 }
