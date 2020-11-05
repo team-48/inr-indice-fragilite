@@ -264,13 +264,12 @@ header .search-field:focus {
     width: 48%;
 }
 
-.stats .top .right .map {
-    display: none;
+.stats .top .right .explain {
     margin-top: 6px;
 }
 
-.stats .top .right .map img {
-    width: 100%;
+.stats .top .right .explain p {
+    margin: 16px;
 }
 
 .stats .show-more {

@@ -158,11 +158,15 @@ export default class CityStatsContainer {
                 
                         <div class="right">
                 
-                            <div class="bloc map">
+                            <div class="bloc explain">
                                 <div class="bloc-header">
-                                    <h2>Carte</h2>
+                                    <h2>Comprendre les indicateurs</h2>
                                 </div>
-                                <img src="/assets/images/map.png"/>
+                                <p class="grey">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut enim at orci elementum iaculis viverra in libero. Ut sed ligula eget magna tristique laoreet sed nec metus. Aliquam erat volutpat. Aenean quam eros, ornare in pharetra ac, rutrum quis sapien. Aliquam vitae facilisis sapien. Nulla viverra et purus in pellentesque. Donec luctus ipsum in est hendrerit, vitae consectetur ipsum pulvinar. Etiam viverra mauris vel mauris sagittis consectetur. Donec ac sem neque. Donec lacinia urna condimentum neque imperdiet, id posuere elit fringilla. Quisque tristique diam quam, feugiat dignissim sapien molestie et. Nam condimentum hendrerit dictum.
+                                </br></br>
+                                Etiam eu faucibus massa. Praesent convallis suscipit eros. Integer sollicitudin ex vel nunc varius pellentesque in et velit. Suspendisse potenti. Proin ornare tempor odio, eget vulputate eros bibendum pellentesque. Quisque sit amet luctus lectus. Morbi vestibulum posuere risus dignissim lacinia. In eu nulla nec velit tempor malesuada vel et ipsum. Aliquam sit amet ipsum vel dolor porttitor feugiat in vitae quam. Mauris faucibus diam vel auctor lobortis.
+                                </p>
                             </div>
                 
                         </div>
