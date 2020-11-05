@@ -36,9 +36,10 @@ class ParserService implements IParserService
 
         $city =  $this->filterCityByCityCode($headers, $cities, $cityCode);
 
-        $city[0]['scoring'] = $scoring;
-
-        return $city;
+        return [
+            'scoring' => $scoring,
+            'cities' => $city
+        ];
     }
 
     private function getColumnIndexByName(array $headers, string $name) {
