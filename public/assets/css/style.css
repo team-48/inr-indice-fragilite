@@ -40,7 +40,7 @@ input[type=number] {
     padding: 0 28px;
     background-color: #0052ea;
     border-radius: 0.75rem;
-    box-shadow: 0 6px 12px rgba(140,152,164,.075);
+    box-shadow: 0 6px 12px rgba(140, 152, 164, .075);
     transition: 0.3s;
 }
 
@@ -59,6 +59,7 @@ input[type=number] {
 }
 
 .bloc {
+    position: relative;
     border: 1px solid #ddd;
     background-color: white;
     box-shadow: 0 6px 12px rgba(140,152,164,.075);
@@ -82,6 +83,18 @@ input[type=number] {
     font-size: 16px;
     color: black;
     font-weight: bold;
+}
+
+.bloc-footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.bloc-footer p {
+    font-size: 12px;
 }
 
 header {
@@ -362,6 +375,15 @@ header #search_form_loader #search-field-loader {
 
 .stats .top .left .stat-full {
     width: 100%;
+    cursor: pointer;
+}
+
+.stats .top .left .stat-full > * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .stats .top .left .stat-column {
@@ -391,23 +413,20 @@ header #search_form_loader #search-field-loader {
 .stats .top .left .stat-column .stat {
     width: 86%;
     margin: 6px auto;
+    cursor: pointer;
+}
+
+.stats .top .left .stat-column .stat > *{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .stats .top .left .stat-column .stat .number {
     bottom: 10px;
     top: auto;
-}
-
-.stats .top .left .stat .number-good {
-    color: darkgreen;
-}
-
-.stats .top .left .stat .number-warning {
-    color: darkorange;
-}
-
-.stats .top .left .stat .number-bad {
-    color: darkred;
 }
 
 .stats .top .right {
@@ -416,14 +435,28 @@ header #search_form_loader #search-field-loader {
 
 .stats .top .right .explain {
     margin-top: 6px;
+    height: 426px;
+}
+
+.stats .top .right .explain h3 {
+    color: black;
+    margin-left: 16px;
 }
 
 .stats .top .right .explain p {
     margin: 16px;
 }
 
+.stats .top .right .explain ul li {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.stats .top .right .explain .bloc-footer p {
+    margin: 0 0 0 16px;
+}
+
 .stats .show-more {
-    display: none;
     width: 150px;
     height: 28px;
     border: 1px solid #ddd;
@@ -447,8 +480,8 @@ header #search_form_loader #search-field-loader {
 
 .stats .more-stats {
     width: 100%;
+    height: 0;
     padding-bottom: 20px;
-    transform: scaleY(1);
     transform-origin: top;
     transition: 0.5s;
     overflow: hidden;
@@ -471,11 +504,6 @@ header #search_form_loader #search-field-loader {
     padding: 1rem 1.3125rem;
     vertical-align: top;
     border-top: .0625rem solid rgba(231,234,243,.7);
-}
-
-.stats .more-stats-expanded {
-    transform: scaleY(1);
-    transition: 0.5s;
 }
 
 footer {

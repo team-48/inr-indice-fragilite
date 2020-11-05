@@ -10,27 +10,69 @@ export default class CityStatsContainer {
     update(city = null) {
         this.city = city;
         this.loadCity(() => {
+            this.container.innerHTML = this.render();
             if (this.city != null) {
-                this.container.innerHTML = this.render();
                 this.generatePDFBtn = new GeneratePdfBtnComponent();
                 this.generatePDFBtn.update();
                 this.afterViewInit();
             }
+        }, () => {
+            this.container.innerHTML = this.render();
         });
-        this.container.innerHTML = this.render();
     }
 
     afterViewInit() {
         const showMoreBtn = document.querySelector(`#show-more`);
         if (showMoreBtn) {
             showMoreBtn.addEventListener('click', () => {
-                document.getElementById('more-stats').classList.add("more-stats-expanded");
+                if (document.getElementById('more-stats').style.height === 'auto') {
+                    document.getElementById('more-stats').style.height = '0';
+                    document.getElementById('show-more-txt').innerText = "En savoir plus";
+                } else {
+                    document.getElementById('more-stats').style.height = 'auto';
+                    document.getElementById('show-more-txt').innerText = "Fermer";
+                }
+
+            });
+        }
+
+        const explanationTextContainer = document.querySelector('#explanation-text-container');
+        const globalScoreBloc = document.querySelector('#globalScore');
+        const digitalInterfacesAccessBloc = document.querySelector('#digitalInterfacesAccess');
+        const informationAccessBloc = document.querySelector('#informationAccess');
+        const administrativeSkillsBloc = document.querySelector('#administrativeSkills');
+        const scholarAndDigitalSkills = document.querySelector('#scholarAndDigitalSkills');
+
+        if (globalScoreBloc) {
+            globalScoreBloc.addEventListener('click', () => {
+                explanationTextContainer.innerHTML = this.getExplanationText('globalScore');
+            });
+        }
+        if (digitalInterfacesAccessBloc) {
+            digitalInterfacesAccessBloc.addEventListener('click', () => {
+                explanationTextContainer.innerHTML = this.getExplanationText('digitalInterfacesAccess');
+            });
+        }
+        if (informationAccessBloc) {
+            informationAccessBloc.addEventListener('click', () => {
+                explanationTextContainer.innerHTML = this.getExplanationText('informationAccess');
+            });
+        }
+        if (administrativeSkillsBloc) {
+            administrativeSkillsBloc.addEventListener('click', () => {
+                explanationTextContainer.innerHTML = this.getExplanationText('administrativeSkills');
+            });
+        }
+        if (scholarAndDigitalSkills) {
+            scholarAndDigitalSkills.addEventListener('click', () => {
+                explanationTextContainer.innerHTML = this.getExplanationText('scholarAndDigitalSkills');
             });
         }
     }
 
-    loadCity(onCityLoaded) {
+    loadCity(onCityLoaded, onCityLoadFail) {
         if (this.city === null) {
+            onCityLoadFail();
             return;
         }
         if (!localStorage.getItem(this.city.postalCode))
@@ -49,7 +91,6 @@ export default class CityStatsContainer {
             this.cityStats = result;
             onCityLoaded();
         }
-
     }
 
     averageData() {
@@ -89,10 +130,74 @@ export default class CityStatsContainer {
             r = (data - 100) * 255 / (med - 100);
             g = 200 - (data - 100) * 200 / (med - 100);
         } else {
-            g = 200 - (data - med) * 200 / ((max - med));
-            b = (data - med) * 255 / ((max - med));
+            g = 200 - (data - med) * 200 / (max - med);
+            b = (data - med) * 255 / (max - med);
         }
         return ('rgb(' + r + ', '+ g +', ' + b + ')');
+    }
+
+    getExplanationText(data) {
+        switch(data) {
+            case 'digitalInterfacesAccess':
+                return `
+                <h3>Accès aux interfaces numériques</h3>
+                <p>Identifier des territoires mal couverts par une offre de service d’information ou des populations qui auront des difficultés à comprendre l’information.</p>
+                <p>Parmi les difficultés associées, on peut citer :</p>
+                <ul>
+                    <li>Avoir des difficultés financière à s’équiper, s’abonner</li>
+                    <li>Ne pas être équipé en ordinateur</li>
+                    <li>Ne pas avoir de FAI<sup>1</sup></li>
+                    <li>Ne pas avoir de couverture THD/HD<sup>2</sup></li>
+                    <li>Ne pas avoir de couverture mobile</li>
+                </ul>
+                <div class="bloc-footer">
+                    <p><sup>1</sup>: Fournisseur d'Accès Internet</p>
+                    <p><sup>2</sup>: Très Haut Débit / Haut Débit</p>
+                </div>`;
+            case 'informationAccess':
+                return `
+                <h3>Accès à l'information</h3>
+                <p>Identifier des territoires mal couverts par les réseaux ou dans lesquels des populations auront des difficultés financières à y accéder.</p>
+                <p>Parmi les difficultés associées, on peut citer :</p>
+                <ul>
+                    <li>Être isolé</li>
+                    <li>Être éloigné d’un point d’information/médiation numérique</li>
+                    <li>Être éloigné d’un point d’information ou aide sociale ou administrative</li>
+                    <li>Ne pas être locuteur du français</li>
+                </ul>`;
+            case 'administrativeSkills':
+                return `
+                <h3>Compétences administratives</h3>
+                <p>Identifier des populations parmi lesquelles s'observe une fréquence d'illéctronisme ou difficulté à utiliser Internet.</p>
+                <p>Parmi les difficultés associées, on peut citer :</p>
+                <ul>
+                    <li>Être âgé</li>
+                    <li>Être sans diplôme</li>
+                    <li>Être en situation de handicap</li>
+                </ul>`;
+            case 'scholarAndDigitalSkills':
+                return `
+                <h3>Compétences numériques / scolaires</h3>
+                <p>Identifier des populations parmis lesquelles s'observent des difficultés à accomplir des procédures administratives.</p>
+                <p>Parmi les difficultés associées, on peut citer :</p>
+                <ul>
+                    <li>Être jeune</li>
+                    <li>Être né à l'étranger</li>
+                    <li>Être en situation de précarité</li>
+                    <li>Être éloigné d'un lieu de médiation sociale</li>
+                </ul>`;
+            default:
+                return `
+                <h3>Score global</h3>
+                <p>L’indice de fragilité numérique révèle la probabilité que sur
+                    un territoire donné, une partie significative de la population
+                    ciblée se trouve en situation d’exclusion numérique. Les
+                    indicateurs produits sur la base de cet indice sont donc des
+                    projections de risques, qu’il convient, dans la mesure du
+                    possible, de recouper par une enquête qualitative ou les
+                    données d’enquêtes sociologiques.</p>
+                `;
+        }
     }
 
     render() {
@@ -122,9 +227,8 @@ export default class CityStatsContainer {
                             <div class="bloc" id="gradient-explanations-content">
                                 <p>
                                 Les données sont collorées afin d'indiquer la qualité des indicateurs pour la localité
-                                donnée par rapport au département ou à la région : un chiffre vert représente une donnée
-                                meilleure que la majorité du département ou de la région, tandis qu'un chiffre rouge illustre
-                                un indicateur médiocre en comparaison aux autres localités concernées.
+                                donnée par rapport au département ou à la région : plus un indicateur est rouge, plus
+                                il est médiocre en comparaison des autres localités concernées.
                                 </p>               
                             </div>
                         </div>
@@ -133,7 +237,7 @@ export default class CityStatsContainer {
                     <div class="top">
                 
                         <div class="left">
-                            <div class="bloc stat stat-full">
+                            <div class="bloc stat stat-full" id="globalScore">
                                 <p><b>Score global</b></p>
                                 <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'], this.cityStats['scoring']['department'])}">
                                     ${averages['moyenneScoreGlobal'].toFixed(2)}
@@ -148,14 +252,14 @@ export default class CityStatsContainer {
                                     </h1>
                                 </div>
                                 
-                                <div class="bloc stat">
+                                <div class="bloc stat" id="digitalInterfacesAccess">
                                     <p>Accès aux interfaces numériques</p>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'], this.cityStats['scoring']['digitalInterfacesAccess'])}">
                                         ${averages['moyenneInterfaceNumerique'].toFixed(2)}
                                     </h1>
                                 </div>
                     
-                                <div class="bloc stat">
+                                <div class="bloc stat" id="informationAccess">
                                     <p>Accès à l'information</p>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'], this.cityStats['scoring']['informationAccess'])}">
                                         ${averages['moyenneAccesInfo'].toFixed(2)}
@@ -172,14 +276,14 @@ export default class CityStatsContainer {
                                     </h1>
                                 </div>
                                 
-                                <div class="bloc stat">
+                                <div class="bloc stat" id="administrativeSkills">
                                     <p>Compétences administratives</p>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'], this.cityStats['scoring']['administrativeSkills'])}">
                                         ${averages['moyenneCompetencesAdmin'].toFixed(2)}
                                     </h1>
                                 </div>
                     
-                                <div class="bloc stat">
+                                <div class="bloc stat" id="scholarAndDigitalSkills">
                                     <p>Compétences numériques / scolaires</p>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'], this.cityStats['scoring']['schoolSkills'])}">
                                         ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
@@ -195,11 +299,16 @@ export default class CityStatsContainer {
                                 <div class="bloc-header">
                                     <h2>Comprendre les indicateurs</h2>
                                 </div>
-                                <p class="grey">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut enim at orci elementum iaculis viverra in libero. Ut sed ligula eget magna tristique laoreet sed nec metus. Aliquam erat volutpat. Aenean quam eros, ornare in pharetra ac, rutrum quis sapien. Aliquam vitae facilisis sapien. Nulla viverra et purus in pellentesque. Donec luctus ipsum in est hendrerit, vitae consectetur ipsum pulvinar. Etiam viverra mauris vel mauris sagittis consectetur. Donec ac sem neque. Donec lacinia urna condimentum neque imperdiet, id posuere elit fringilla. Quisque tristique diam quam, feugiat dignissim sapien molestie et. Nam condimentum hendrerit dictum.
-                                </br></br>
-                                Etiam eu faucibus massa. Praesent convallis suscipit eros. Integer sollicitudin ex vel nunc varius pellentesque in et velit. Suspendisse potenti. Proin ornare tempor odio, eget vulputate eros bibendum pellentesque. Quisque sit amet luctus lectus. Morbi vestibulum posuere risus dignissim lacinia. In eu nulla nec velit tempor malesuada vel et ipsum. Aliquam sit amet ipsum vel dolor porttitor feugiat in vitae quam. Mauris faucibus diam vel auctor lobortis.
-                                </p>
+                                <div class="grey" id="explanation-text-container">
+                                <h3>Score global</h3>
+                                <p>L’indice de fragilité numérique révèle la probabilité que sur
+                                un territoire donné, une partie significative de la population
+                                ciblée se trouve en situation d’exclusion numérique. Les
+                                indicateurs produits sur la base de cet indice sont donc des
+                                projections de risques, qu’il convient, dans la mesure du
+                                possible, de recouper par une enquête qualitative ou les
+                                données d’enquêtes sociologiques.</p>
+                                </div>
                             </div>
                 
                         </div>
@@ -260,7 +369,7 @@ export default class CityStatsContainer {
                             </div>`).join('') +`
                         </div>
                         <div class="show-more" id="show-more">
-                            <p class="grey">En savoir plus</p>
+                            <p class="grey" id="show-more-txt">En savoir plus</p>
                         </div>`;
         } else {
             return `<div class="no-cities">
