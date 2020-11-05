@@ -1,4 +1,4 @@
-import CityStatsContainer from "../stats/stats.component.js";
+import CityStatsContainer from "../stats/StatsComponent.js";
 
 export default class CityListContainer {
     constructor() {
@@ -17,6 +17,7 @@ export default class CityListContainer {
             cityElement.addEventListener('click', () => {
                 this.update();
                 this.cityStatsComponent.update(city);
+                document.querySelector('#search_form').value = "";
             });
         })
     }

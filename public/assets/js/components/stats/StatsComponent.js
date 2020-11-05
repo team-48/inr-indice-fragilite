@@ -1,4 +1,4 @@
-import GeneratePdfBtnComponent from "../generate-pdf-btn/generate-pdf-btn.component.js";
+import GeneratePdfBtnComponent from "../generate-pdf-btn/GeneratePdfBtnComponent.js";
 
 export default class CityStatsContainer {
     constructor() {
