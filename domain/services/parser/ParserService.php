@@ -8,6 +8,7 @@ use App\Domain\Views\CityStatsScoring;
 class ParserService implements IParserService
 {
     private static string $COLUMN_CITY_CODE = "COM";
+    private static string $COLUMN_CITY_DEPARTMENT = "Insee Dep";
     private static string $COLUMN_CITY_DEPARTMENT_SCORE = "SCORE GLOBAL departement 1";
     private static string $COLUMN_CITY_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
     private static string $COLUMN_CITY_ACCESS_SCORE = "GLOBAL ACCES departement 1";
@@ -38,7 +39,9 @@ class ParserService implements IParserService
 
         $headers = $this->statisticsRepository->getStatsHeader();
 
-        $scoring = $this->computeScoring($headers, $cities);
+        $query_type = "department";
+        $scoring = $this->computeScoring($headers, $cities, $query_type, $departmentCode);
+
 
         $citiesForCityCode = $this->filterCityByCityCode($headers, $cities, $cityCode);
 
@@ -101,8 +104,14 @@ class ParserService implements IParserService
         return $filteredCities;
     }
 
-    private function computeScoring(array $headers, array $cities)
+    private function computeScoring(array $headers, array $cities, string $query_type = "region", string $departmentCode = null)
     {
+        if ($query_type === "department") {
+            $cities = array_filter($cities, function ($var) use ($departmentCode, $headers) {
+                return ($var[$this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT)] == $departmentCode);
+            });
+        }
+
         $result = new CityStatsScoring();
 
         foreach ($cities as $city)
