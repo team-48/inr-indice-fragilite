@@ -1,12 +1,10 @@
 import GeneratePdfBtnComponent from "../generate-pdf-btn/generate-pdf-btn.component.js";
-import LoaderComponent from "../loader/loader.component.js";
 
 export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
         this.cityStats = null
         this.update();
-        this.loader = new LoaderComponent('#city_stats_loader_container', 'city-stats-loader');
     }
 
     update(city = null) {

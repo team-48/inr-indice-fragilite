@@ -9,7 +9,6 @@ export default class LoaderComponent {
     }
 
     display(display = true) {
-        console.log("display " + this.loaderId + "  : " + display);
         if (document.getElementById(this.loaderId)) {
             document.getElementById(this.loaderId).style.display = display ? 'block' : 'none';
         }
