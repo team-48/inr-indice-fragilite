@@ -6,6 +6,7 @@ use App\Controllers\CityStatsController;
 use App\Domain\Services\Cities\CitiesService;
 use App\Domain\Services\Parser\ParserService;
 use App\Infrastructure\Cities\CitiesRepository;
+use App\Infrastructure\Region\RegionDepartmentRepository;
 use App\Infrastructure\Statistics\StatisticsRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -38,10 +39,11 @@ $app->get("/cities", function (Request $request, Response $response, array $args
 
 $app->get("/stats/{communeCod}", function (Request $request, Response $response, array $args) {
     $statisticsRepository = new StatisticsRepository();
-    $parserService = new ParserService($statisticsRepository);
+    $regionDepartmentRepository = new RegionDepartmentRepository();
+    $parserService = new ParserService($statisticsRepository, $regionDepartmentRepository);
 
     $controller = new CityStatsController($parserService);
-    return $controller->getCitiesByComCode($response, $args);
+    return $controller->getCitiesByComCode($request, $response, $args);
 });
 
 $app->run();
