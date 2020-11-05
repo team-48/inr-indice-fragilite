@@ -30,6 +30,6 @@ export default class SearchInputContainer {
     }
 
     render() {
-        return `<input id="search_form" type="text" placeholder="Rechercher un lieu" class="search-field"/>`;
+        return `<input id="search_form" type="text" placeholder="Rechercher par code postal" class="search-field"/>`;
     }
 }
