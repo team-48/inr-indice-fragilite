@@ -212,6 +212,26 @@ header #search_form_loader #search-field-loader {
     text-overflow: ellipsis;
 }
 
+.stats #city_stats_loader_container {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    border-radius: 50%;
+}
+
+.stats #city_stats_loader_container #city-stats-loader {
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    border-top: 2px solid #999;
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+
 .stats .stats-header {
     display: flex;
     justify-content: space-between;

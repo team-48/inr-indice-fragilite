@@ -3,7 +3,9 @@ export default class LoaderComponent {
     constructor(container, loaderId = null) {
         this.container = document.querySelector(container);
         this.loaderId = loaderId;
-        this.container.innerHTML = this.render();
+        if (this.container) {
+            this.container.innerHTML = this.render();
+        }
     }
 
     display(display = true) {

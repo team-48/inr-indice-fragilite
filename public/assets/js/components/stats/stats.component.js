@@ -1,10 +1,12 @@
 import GeneratePdfBtnComponent from "../generate-pdf-btn/generate-pdf-btn.component.js";
+import LoaderComponent from "../loader/loader.component.js";
 
 export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
         this.cityStats = null
         this.update();
+        this.loader = new LoaderComponent('#city_stats_loader_container', 'city-stats-loader');
     }
 
     update(city = null) {
@@ -38,8 +40,8 @@ export default class CityStatsContainer {
             response.json().then(result => {
                 this.cityStats = result;
                 onCityLoaded();
-            })
-        })
+            });
+        });
     }
 
     averageData() {
@@ -89,7 +91,8 @@ export default class CityStatsContainer {
     render() {
         if (this.city !== null && this.cityStats !== null) {
             const averages = this.averageData();
-            return `<div class="stats-header">
+            return `<div id="city_stats_loader_container"></div>
+                    <div class="stats-header">
                         <h1>${this.city.cityName} (${this.city.postalCode})</h1>
                         <div class="center-vertically" id="generate-pdf-btn-container"></div>
                     </div>
