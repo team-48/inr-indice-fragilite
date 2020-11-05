@@ -33,13 +33,23 @@ export default class CityStatsContainer {
         if (this.city === null) {
             return;
         }
-
-        fetch(`${window.location.href}stats/${this.city.cityCode}`).then(response => {
-            response.json().then(result => {
-                this.cityStats = result;
-                onCityLoaded();
+        if (!localStorage.getItem(this.city.postalCode))
+        {
+            fetch(`${window.location.href}stats/${this.city.cityCode}`).then(response => {
+                response.json().then(result => {
+                    this.cityStats = result;
+                    localStorage.setItem(this.city.postalCode, JSON.stringify(result));
+                    onCityLoaded();
+                });
             });
-        });
+        }
+        else
+        {
+            const result = JSON.parse(localStorage.getItem(this.city.postalCode));
+            this.cityStats = result;
+            onCityLoaded();
+        }
+
     }
 
     averageData() {
