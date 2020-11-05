@@ -231,6 +231,7 @@ header .search-field:focus {
 }
 
 .stats .top .left .stat {
+    position: relative;
     width: 250px;
     height: 100px;
     padding: 6px 12px;
@@ -238,14 +239,25 @@ header .search-field:focus {
 }
 
 .stats .top .left .stat .number {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    text-align: right;
     margin: 0;
     font-size: 28px;
     transition: 0.3s;
 }
 
-.stats .top .left .stat:hover .number {
-    color: #0052ea;
-    transition: 0.3s;
+.stats .top .left .stat .number-good {
+    color: darkgreen;
+}
+
+.stats .top .left .stat .number-warning {
+    color: darkorange;
+}
+
+.stats .top .left .stat .number-bad {
+    color: darkred;
 }
 
 .stats .top .right {
@@ -253,6 +265,7 @@ header .search-field:focus {
 }
 
 .stats .top .right .map {
+    display: none;
     margin-top: 6px;
 }
 

@@ -70,6 +70,25 @@ export default class CityStatsContainer {
         }
     }
 
+    colorData(data) {
+        const max = 120;
+        const step = (max - 100) / 4;
+        if (data <= 100) {
+            return '#000';
+        }
+        else if (data > 100 && data <= 100 + step) {
+            return '#40b01e';
+        } else if (data > 100 + step && data <= 100 + 2 * step) {
+            return '#a4ab27';
+        } else if (data > 100 + 2 * step && data <= 100 + 3 * step) {
+            return '#d19e11';
+        } else if (data > 100 + 3 * step && data <= 100 + 4 * step) {
+            return '#d16b11';
+        } else {
+            return '#d11111';
+        }
+    }
+
     render() {
         if (this.city !== null && this.cityStats !== null) {
             const averages = this.averageData();
@@ -92,37 +111,51 @@ export default class CityStatsContainer {
                         <div class="left">
                             <div class="bloc stat">
                                 <p>Accès aux interfaces numériques</p>
-                                <h1 class="number">${averages['moyenneInterfaceNumerique'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'])}">
+                                    ${averages['moyenneInterfaceNumerique'].toFixed(2)}
+                                </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Accès à l'information</p>
-                                <h1 class="number">${averages['moyenneAccesInfo'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'])}">
+                                    ${averages['moyenneAccesInfo'].toFixed(2)}
+                                </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Compétences administratives</p>
-                                <h1 class="number">${averages['moyenneCompetencesAdmin'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'])}">
+                                    ${averages['moyenneCompetencesAdmin'].toFixed(2)}
+                                </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Compétences numériques / scolaires</p>
-                                <h1 class="number">${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'])}">
+                                    ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
+                                </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Accès</p>
-                                <h1 class="number">${averages['moyenneAcces'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAcces'])}">
+                                    ${averages['moyenneAcces'].toFixed(2)}
+                                </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Compétences</p>
-                                <h1 class="number">${averages['moyenneCompetences'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetences'])}">
+                                    ${averages['moyenneCompetences'].toFixed(2)}
+                                </h1>
                             </div>
                 
                             <div class="bloc stat">
                                 <p>Score global</p>
-                                <h1 class="number">${averages['moyenneScoreGlobal'].toFixed(2)}</h1>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'])}">
+                                    ${averages['moyenneScoreGlobal'].toFixed(2)}
+                                </h1>
                             </div>
                         </div>
                 
