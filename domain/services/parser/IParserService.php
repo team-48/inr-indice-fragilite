@@ -5,12 +5,9 @@ namespace App\Domain\Services\Parser;
 interface IParserService
 {
     /**
-     * @param string $value
+     * Get statistics by city code
+     * @param string $cityCode
+     * @return array
      */
-    public function filterByName(string $value);
-
-    /**
-     * @param string $value
-     */
-    public function filterByComCode(string $value);
+    public function getCityStatisticsByCityCode(string $cityCode): array;
 }
