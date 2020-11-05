@@ -2,11 +2,11 @@
 
 use App\Controllers\CitySearchController;
 use App\Controllers\LandingController;
-use App\Controllers\StatsController;
 use App\Controllers\CityStatsController;
 use App\Domain\Services\Cities\CitiesService;
 use App\Domain\Services\Parser\ParserService;
 use App\Infrastructure\Cities\CitiesRepository;
+use App\Infrastructure\Statistics\StatisticsRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -37,8 +37,11 @@ $app->get("/cities", function (Request $request, Response $response, array $args
 });
 
 $app->get("/stats/{communeCod}", function (Request $request, Response $response, array $args) {
-    $controller = new CityStatsController();
-    return $controller->getCitiesByComCode($request, $response, $args);
+    $statisticsRepository = new StatisticsRepository();
+    $parserService = new ParserService($statisticsRepository);
+
+    $controller = new CityStatsController($parserService);
+    return $controller->getCitiesByComCode($response, $args);
 });
 
 $app->run();
