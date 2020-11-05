@@ -57,7 +57,7 @@ export default class CityStatsContainer {
             moyenneCompetencesNumeriquesScolaires += parseFloat(stat['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']);
             moyenneAcces += parseFloat(stat['GLOBAL ACCES region 1']);
             moyenneCompetence += parseFloat(stat['GLOBAL COMPETENCES region 1']);
-            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region * ']);
+            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region 1']);
         });
         return {
             'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats.length,
