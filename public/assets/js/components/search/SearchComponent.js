@@ -1,5 +1,5 @@
-import CityListContainer from "../city-list/city-list.component.js";
-import LoaderComponent from "../loader/loader.component.js";
+import CityListContainer from "../city-list/CityListComponent.js";
+import LoaderComponent from "../loader/LoaderComponent.js";
 
 export default class SearchInputContainer {
     constructor() {
