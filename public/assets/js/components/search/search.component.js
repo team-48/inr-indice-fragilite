@@ -10,8 +10,7 @@ export default class SearchInputContainer {
     }
 
     searchCity(postalCode) {
-        const url = window.location.href;
-        fetch(url +`cities?postalCode=${postalCode}`).then(response => {
+        fetch( window.location.href +`cities?postalCode=${postalCode}`).then(response => {
             response.json().then(result => {
                 this.cityComponent.update(result);
             });
