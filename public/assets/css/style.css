@@ -140,6 +140,7 @@ header .search-field:focus {
 
 .content {
     width: 80%;
+    min-height: calc(100vh - 290px);
     margin: 70px auto 0;
 }
 
@@ -279,6 +280,18 @@ header .search-field:focus {
 .stats .more-stats-expanded {
     transform: scaleY(1);
     transition: 0.5s;
+}
+
+footer {
+    width: 80%;
+    height: 200px;
+    background-color: #eee;
+    padding: 10px 10%;
+}
+
+footer p, footer a {
+    color: #8c98a4;
+    font-size: 11px;
 }
 
 @media screen and (max-width: 1439px ) {
