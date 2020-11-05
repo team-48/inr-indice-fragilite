@@ -4,20 +4,20 @@ export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
         this.cityStats = null
-
         this.update();
     }
 
     update(city = null) {
         this.city = city;
         this.loadCity(() => {
-            this.container.innerHTML = this.render();
             if (this.city != null) {
+                this.container.innerHTML = this.render();
                 this.generatePDFBtn = new GeneratePdfBtnComponent();
                 this.generatePDFBtn.update();
                 this.afterViewInit();
             }
         });
+        this.container.innerHTML = this.render();
     }
 
     afterViewInit() {
@@ -38,8 +38,8 @@ export default class CityStatsContainer {
             response.json().then(result => {
                 this.cityStats = result;
                 onCityLoaded();
-            })
-        })
+            });
+        });
     }
 
     averageData() {
@@ -50,152 +50,204 @@ export default class CityStatsContainer {
         let moyenneAcces = 0;
         let moyenneCompetence = 0;
         let moyenneScoreGlobal = 0;
-        this.cityStats.forEach(function(stat) {
+        this.cityStats['cities'].forEach(function(stat) {
             moyenneInterfaceNumeriques += parseFloat(stat['ACCÈS AUX INTERFACES NUMERIQUES region 1']);
             moyenneAccesInfo += parseFloat(stat['ACCES A L\'INFORMATION region 1']);
             moyenneCompetencesAdmin += parseFloat(stat['COMPETENCES ADMINISTATIVES region 1']);
             moyenneCompetencesNumeriquesScolaires += parseFloat(stat['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']);
             moyenneAcces += parseFloat(stat['GLOBAL ACCES region 1']);
             moyenneCompetence += parseFloat(stat['GLOBAL COMPETENCES region 1']);
-            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region * ']);
+            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region 1']);
         });
         return {
-            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats.length,
-            'moyenneAccesInfo': moyenneAccesInfo / this.cityStats.length,
-            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / this.cityStats.length,
-            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / this.cityStats.length,
-            'moyenneAcces': moyenneAcces / this.cityStats.length,
-            'moyenneCompetences': moyenneCompetence / this.cityStats.length,
-            'moyenneScoreGlobal': moyenneScoreGlobal / this.cityStats.length
+            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats['cities'].length,
+            'moyenneAccesInfo': moyenneAccesInfo / this.cityStats['cities'].length,
+            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / this.cityStats['cities'].length,
+            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / this.cityStats['cities'].length,
+            'moyenneAcces': moyenneAcces / this.cityStats['cities'].length,
+            'moyenneCompetences': moyenneCompetence / this.cityStats['cities'].length,
+            'moyenneScoreGlobal': moyenneScoreGlobal / this.cityStats['cities'].length
+        }
+    }
+
+    colorData(data, max) {
+        const step = (max - 100) / 4;
+        console.log(max);
+        if (data <= 100 + step) {
+            return '#40b01e';
+        } else if (data > 100 + step && data <= 100 + step) {
+            return '#a4ab27';
+        } else if (data > 100 + step && data <= 100 + 2 * step) {
+            return '#d19e11';
+        } else if (data > 100 + 2 * step && data <= 100 + 3 * step) {
+            return '#d16b11';
+        } else {
+            return '#d11111';
+        }
+    }
+
+    __colorData(data, max) {
+        const med = (max + 100) / 2
+        if (data < 100) {
+            return("rgb(0 , 255, 0)");
+        }
+        if (100 <= data < med) {
+            console.log('rgb(' + (data - 100) * 255 / (med - 100) + ', ' + 255 - (data - 100) * 255 / (med - 100) + ',' + 0 + ')');
+            return ("rgb(' + (data - 100) * 255 / (med - 100) + ', ' + 255 - (data - 100) * 255 / (med - 100) + ',' + 0 + ')");
+        } else {
+            console.log('rgb(0,' + 255 - (data - med) * 255 / ((max - med)) + ', ' + (data - med) * 255 / ((max - med)) + ')');
+            return ("rgb(0,' + 255 - (data - med) * 255 / ((max - med)) + ', ' + (data - med) * 255 / ((max - med)) + ')");
         }
     }
 
     render() {
-        const averages = this.averageData();
-
         if (this.city !== null && this.cityStats !== null) {
-            return `
-
-    <div class="stats-header">
-        <h1>${this.city.cityName} (${this.city.postalCode})</h1>
-        <div class="center-vertically" id="generate-pdf-btn-container"></div>
-    </div>
-
-    <div class="top">
-
-        <div class="left">
-            <div class="bloc stat">
-                <p>Accès aux interfaces numériques</p>
-                <h1 class="number">${averages['moyenneInterfaceNumerique'].toFixed(2)}</h1>
-            </div>
-
-            <div class="bloc stat">
-                <p>Accès à l'information</p>
-                <h1 class="number">${averages['moyenneAccesInfo'].toFixed(2)}</h1>
-            </div>
-
-            <div class="bloc stat">
-                <p>Compétences administratives</p>
-                <h1 class="number">${averages['moyenneCompetencesAdmin'].toFixed(2)}</h1>
-            </div>
-
-            <div class="bloc stat">
-                <p>Compétences numériques / scolaires</p>
-                <h1 class="number">${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}</h1>
-            </div>
-
-            <div class="bloc stat">
-                <p>Accès</p>
-                <h1 class="number">${averages['moyenneAcces'].toFixed(2)}</h1>
-            </div>
-
-            <div class="bloc stat">
-                <p>Compétences</p>
-                <h1 class="number">${averages['moyenneCompetences'].toFixed(2)}</h1>
-            </div>
-
-            <div class="bloc stat">
-                <p>Score global</p>
-                <h1 class="number">${averages['moyenneScoreGlobal'].toFixed(2)}</h1>
-            </div>
-        </div>
-
-        <div class="right">
-
-            <div class="bloc map">
-                <div class="bloc-header">
-                    <h2>Carte</h2>
-                </div>
-                <img src="/assets/images/map.png"/>
-            </div>
-
-        </div>
-
-    </div>
-    
-    <div class="more-stats" id="more-stats">
-    
-        <h2>Quartiers</h2>
-        <p>Ces statistiques concernent les quartiers de cette agglomération</p> 
-         `+ this.cityStats.map((bloc, index) => `
-            <div class="bloc">
-                <div class="bloc-header">
-                    <h2>${bloc['Nom Iris']}</h2>
-                </div>
-                <div class="bloc-content">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Code Iris</td>
-                                <td>${bloc['Iris']}</td>
-                            </tr>
-                            <tr>
-                                <td>Type Iris</td>
-                                <td>${bloc['Type Iris']}</td>
-                            </tr>
-                            <tr>
-                                <td>Accès à l'information</td>
-                                <td>${parseFloat(bloc['ACCES A L\'INFORMATION region 1']).toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td>Accès aux interfaces numériques</td>
-                                <td>${parseFloat(bloc['ACCÈS AUX INTERFACES NUMERIQUES region 1']).toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td>Compétences administratives</td>
-                                <td>${parseFloat(bloc['COMPETENCES ADMINISTATIVES region 1']).toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td>Compétences numériques et scolaires</td>
-                                <td>${parseFloat(bloc['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']).toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td>Score global accès</td>
-                                <td>${parseFloat(bloc['GLOBAL ACCES region 1']).toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td>Score global compétences</td>
-                                <td>${parseFloat(bloc['GLOBAL COMPETENCES region 1']).toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td>Score global</td>
-                                <td>${parseFloat(bloc['SCORE GLOBAL region * ']).toFixed(2)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>`).join('') +`
-    </div>
-
-    <div class="show-more" id="show-more">
-        <p class="grey">En savoir plus</p>
-    </div>
-`;
+            const averages = this.averageData();
+            return `<div id="city_stats_loader_container"></div>
+                    <div class="stats-header">
+                        <h1>${this.city.cityName} (${this.city.postalCode})</h1>
+                        <div class="center-vertically" id="generate-pdf-btn-container"></div>
+                    </div>
+                    
+                    <div class="switch-comparison">
+                        <div class="switch-btn">
+                            <p>Région</p>   
+                        </div>
+                        <div class="switch-btn switch-btn-active">
+                            <p>Département</p>   
+                        </div>
+                    </div>
+                
+                    <div class="top">
+                
+                        <div class="left">
+                            <div class="bloc stat">
+                                <p>Accès aux interfaces numériques</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'], this.cityStats['scoring']['digitalInterfacesAccess'])}">
+                                    ${averages['moyenneInterfaceNumerique'].toFixed(2)}
+                                </h1>
+                            </div>
+                
+                            <div class="bloc stat">
+                                <p>Accès à l'information</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'], this.cityStats['scoring']['informationAccess'])}">
+                                    ${averages['moyenneAccesInfo'].toFixed(2)}
+                                </h1>
+                            </div>
+                
+                            <div class="bloc stat">
+                                <p>Compétences administratives</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'], this.cityStats['scoring']['administrativeSkills'])}">
+                                    ${averages['moyenneCompetencesAdmin'].toFixed(2)}
+                                </h1>
+                            </div>
+                
+                            <div class="bloc stat">
+                                <p>Compétences numériques / scolaires</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'], this.cityStats['scoring']['schoolSkills'])}">
+                                    ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
+                                </h1>
+                            </div>
+                
+                            <div class="bloc stat">
+                                <p>Accès</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneAcces'], this.cityStats['scoring']['access'])}">
+                                    ${averages['moyenneAcces'].toFixed(2)}
+                                </h1>
+                            </div>
+                
+                            <div class="bloc stat">
+                                <p>Compétences</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetences'], this.cityStats['scoring']['skills'])}">
+                                    ${averages['moyenneCompetences'].toFixed(2)}
+                                </h1>
+                            </div>
+                
+                            <div class="bloc stat">
+                                <p>Score global</p>
+                                <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'], this.cityStats['scoring']['department'])}">
+                                    ${averages['moyenneScoreGlobal'].toFixed(2)}
+                                </h1>
+                            </div>
+                        </div>
+                
+                        <div class="right">
+                
+                            <div class="bloc explain">
+                                <div class="bloc-header">
+                                    <h2>Comprendre les indicateurs</h2>
+                                </div>
+                                <p class="grey">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut enim at orci elementum iaculis viverra in libero. Ut sed ligula eget magna tristique laoreet sed nec metus. Aliquam erat volutpat. Aenean quam eros, ornare in pharetra ac, rutrum quis sapien. Aliquam vitae facilisis sapien. Nulla viverra et purus in pellentesque. Donec luctus ipsum in est hendrerit, vitae consectetur ipsum pulvinar. Etiam viverra mauris vel mauris sagittis consectetur. Donec ac sem neque. Donec lacinia urna condimentum neque imperdiet, id posuere elit fringilla. Quisque tristique diam quam, feugiat dignissim sapien molestie et. Nam condimentum hendrerit dictum.
+                                </br></br>
+                                Etiam eu faucibus massa. Praesent convallis suscipit eros. Integer sollicitudin ex vel nunc varius pellentesque in et velit. Suspendisse potenti. Proin ornare tempor odio, eget vulputate eros bibendum pellentesque. Quisque sit amet luctus lectus. Morbi vestibulum posuere risus dignissim lacinia. In eu nulla nec velit tempor malesuada vel et ipsum. Aliquam sit amet ipsum vel dolor porttitor feugiat in vitae quam. Mauris faucibus diam vel auctor lobortis.
+                                </p>
+                            </div>
+                
+                        </div>
+                
+                    </div>
+                    
+                    <div class="more-stats" id="more-stats">
+                    
+                        <h2>Quartiers</h2>
+                        <p>Ces statistiques concernent les quartiers de cette agglomération</p> 
+                         `+ this.cityStats['cities'].map((bloc, index) => `
+                            <div class="bloc">
+                                <div class="bloc-header">
+                                    <h2>${bloc['Nom Iris']}</h2>
+                                </div>
+                                <div class="bloc-content">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Code Iris</td>
+                                                <td>${bloc['Iris']}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Type Iris</td>
+                                                <td>${bloc['Type Iris']}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Accès à l'information</td>
+                                                <td>${parseFloat(bloc['ACCES A L\'INFORMATION region 1']).toFixed(2)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Accès aux interfaces numériques</td>
+                                                <td>${parseFloat(bloc['ACCÈS AUX INTERFACES NUMERIQUES region 1']).toFixed(2)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Compétences administratives</td>
+                                                <td>${parseFloat(bloc['COMPETENCES ADMINISTATIVES region 1']).toFixed(2)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Compétences numériques et scolaires</td>
+                                                <td>${parseFloat(bloc['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']).toFixed(2)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Score global accès</td>
+                                                <td>${parseFloat(bloc['GLOBAL ACCES region 1']).toFixed(2)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Score global compétences</td>
+                                                <td>${parseFloat(bloc['GLOBAL COMPETENCES region 1']).toFixed(2)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Score global</td>
+                                                <td>${parseFloat(bloc['SCORE GLOBAL region * ']).toFixed(2)}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>`).join('') +`
+                        </div>
+                        <div class="show-more" id="show-more">
+                            <p class="grey">En savoir plus</p>
+                        </div>`;
         } else {
-            return `
-            <div class="no-cities">
-                <img src="/assets/images/fogg-203.png" alt="Aucun lieu sélectionné">
-            </div>`;
+            return `<div class="no-cities">
+                        <img src="/assets/images/fogg-203.png" alt="Aucun lieu sélectionné">
+                    </div>`;
         }
 
     }
