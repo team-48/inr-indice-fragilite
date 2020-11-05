@@ -12,15 +12,15 @@ class StatisticsRepository implements IStatisticsRepository
     /**
      * @inheritdoc
      */
-    public function getCityStatsByDepartment(string $departmentCode): array
+    public function getCityStatsByRegionCode(string $regionCode): array
     {
-        $file = __DIR__ . "/data/{$departmentCode}.csv";
+        $filePath = __DIR__ . "/data/{$regionCode}.csv";
 
         $data = [];
 
-        $fileHandle = fopen($file, "r");
-        $rowIndex = 0;
+        $fileHandle = fopen($filePath, "r");
 
+        $rowIndex = 0;
         while (($row = fgetcsv($fileHandle, self::$FILE_LIMIT, self::$PARSE_DELIMITER)) !== FALSE ) {
             $data[$rowIndex] = $row;
             $rowIndex++;
@@ -36,9 +36,9 @@ class StatisticsRepository implements IStatisticsRepository
      */
     public function getStatsHeader(): array
     {
-        $file = __DIR__ . '/data/headers.csv';
+        $filePath = __DIR__ . '/data/headers.csv';
 
-        $fileHandle = fopen($file, 'r');
+        $fileHandle = fopen($filePath, 'r');
         $headers = fgetcsv($fileHandle, self::$FILE_LIMIT, self::$PARSE_DELIMITER);
 
         fclose($fileHandle);

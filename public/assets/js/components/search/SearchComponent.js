@@ -27,6 +27,8 @@ export default class SearchInputContainer {
         const searchElement = document.querySelector('#search_form');
 
         searchElement.addEventListener('input', (e) => {
+            const val = e.target.value.replace(/[^0-9]/g, '');
+            e.target.value = val;
             if (e.target.value === "") {
                 this.cityComponent.update([]);
                 return;
@@ -36,7 +38,7 @@ export default class SearchInputContainer {
     }
 
     render() {
-        return `<input id="search_form" type="number" placeholder="Rechercher par code postal" class="search-field"/>
+        return `<input id="search_form" type="text" inputmode="numeric" maxlength="5"  pattern="[0-9]*" placeholder="Rechercher par code postal" class="search-field"/>
                 <div id="search_form_loader"></div>`;
     }
 }

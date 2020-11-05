@@ -17,5 +17,5 @@ interface IStatisticsRepository
      * @param string $departmentCode
      * @return array
      */
-    public function getCityStatsByDepartment(string $departmentCode): array;
+    public function getCityStatsByRegionCode(string $departmentCode): array;
 }
