@@ -1,5 +1,5 @@
-import CityListContainer from "../city-list/city-list.component.js";
-import LoaderComponent from "../loader/loader.component.js";
+import CityListContainer from "../city-list/CityListComponent.js";
+import LoaderComponent from "../loader/LoaderComponent.js";
 
 export default class SearchInputContainer {
     constructor() {
@@ -11,13 +11,16 @@ export default class SearchInputContainer {
     }
 
     searchCity(postalCode) {
-        this.loader.display();
-        fetch( window.location.href +`cities?postalCode=${postalCode}`).then(response => {
-            response.json().then(result => {
-                this.loader.display(false);
-                this.cityComponent.update(result);
-            });
-        })
+        if (postalCode.length >= 3)
+        {
+            this.loader.display();
+            fetch( window.location.href +`cities?postalCode=${postalCode}`).then(response => {
+                response.json().then(result => {
+                    this.loader.display(false);
+                    this.cityComponent.update(result);
+                });
+            })
+        }
     }
 
     afterViewInit() {
@@ -33,7 +36,7 @@ export default class SearchInputContainer {
     }
 
     render() {
-        return `<input id="search_form" type="text" placeholder="Rechercher par code postal" class="search-field"/>
+        return `<input id="search_form" type="number" placeholder="Rechercher par code postal" class="search-field"/>
                 <div id="search_form_loader"></div>`;
     }
 }
