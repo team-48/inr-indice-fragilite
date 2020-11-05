@@ -2,30 +2,33 @@ name: CI
 
 on:
   push:
-    tags: 
+    tags:
       - '*'
+
 jobs:
-  runs-on: [ ubuntu-latest ]
+  build:
+    runs-on: [ ubuntu-latest ]
 
-  steps:
-  - uses: actions/checkout@v1
+    steps:
+      - uses: actions/checkout@v1
 
-  - name: Install dependencies
-      uses: php-actions/composer@v2
+      - name: Install dependencies
+        uses: php-actions/composer@v2
+        with:
+          command: composer install
+
+  deploy:
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: SSH Server Deploy
+      uses: kostya-ten/ssh-server-deploy@v3
       with:
-        command: your-command-here
-
-deploy:
-  runs-on: [ubuntu-latest]
-  steps:
-  - uses: actions/checkout@v1
-
-  - name: SSH Server Deploy
-  uses: kostya-ten/ssh-server-deploy@v3
-  with:
-      host: ${{ secrets.SERVER_HOST }}
-      port: ${{ secrets.SERVER_PORT }}
-      username: ${{ secrets.SERVER_USERNAME }}
-      password: ${{ secrets.SERVER_PASSWORD }}
-      scp_source: ./*
-      scp_target: /var/www/inr-indice-fragilite
+        host: ${{ secrets.SERVER_HOST }}
+        port: ${{ secrets.SERVER_PORT }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        scp_source: ./*
+        scp_target: /var/www/inr-indice-fragilite
