@@ -25,5 +25,5 @@ jobs:
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
           -Dsonar.sources=/home/runner/work/inr-indice-fragilite/inr-indice-fragilite
-          -Dsonar.exclusions=/home/runner/work/inr-indice-fragilite/inr-indice-fragilite/infrastrucuture/cities/data/**, /home/runner/work/inr-indice-fragilite/infrastrucuture/statistics/data/**
+          -Dsonar.coverage.exclusions=/home/runner/work/inr-indice-fragilite/inr-indice-fragilite/infrastrucuture/cities/data/**, /home/runner/work/inr-indice-fragilite/infrastrucuture/statistics/data/**
           -Dsonar.scm.provider=git
