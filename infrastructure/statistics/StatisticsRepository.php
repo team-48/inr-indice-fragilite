@@ -12,24 +12,15 @@ class StatisticsRepository implements IStatisticsRepository
     /**
      * @inheritdoc
      */
-    public function getCityStatsByDepartment(string $departmentCode): array
+    public function getCityStatsByRegionCode(string $regionCode): array
     {
-        $regDeptMapper = file_get_contents(__DIR__ . "/reg-dept-mapper.json");
-        $jsonMapper = json_decode($regDeptMapper, true);
-        $depCodeColumn = 'codeDepartement';
-
-        $regionForDepartment = array_filter($jsonMapper, function (array $item) use ($departmentCode, $depCodeColumn) {
-            return preg_match("/^${departmentCode}/m", $item[$depCodeColumn]) != 0;
-        });
-
-        $keyElement = array_key_first($regionForDepartment);
-        $file = __DIR__ . "/data/{$regionForDepartment[$keyElement]["codeRegion"]}.csv";
+        $filePath = __DIR__ . "/data/{$regionCode}.csv";
 
         $data = [];
 
-        $fileHandle = fopen($file, "r");
-        $rowIndex = 0;
+        $fileHandle = fopen($filePath, "r");
 
+        $rowIndex = 0;
         while (($row = fgetcsv($fileHandle, self::$FILE_LIMIT, self::$PARSE_DELIMITER)) !== FALSE ) {
             $data[$rowIndex] = $row;
             $rowIndex++;
@@ -45,9 +36,9 @@ class StatisticsRepository implements IStatisticsRepository
      */
     public function getStatsHeader(): array
     {
-        $file = __DIR__ . '/data/headers.csv';
+        $filePath = __DIR__ . '/data/headers.csv';
 
-        $fileHandle = fopen($file, 'r');
+        $fileHandle = fopen($filePath, 'r');
         $headers = fgetcsv($fileHandle, self::$FILE_LIMIT, self::$PARSE_DELIMITER);
 
         fclose($fileHandle);

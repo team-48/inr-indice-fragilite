@@ -6,6 +6,7 @@ namespace App\Domain\Views;
 
 class CityStatsScoring
 {
+    public string $type;
     public int $department = 0;
     public int $digitalInterfacesAccess = 0;
     public int $informationAccess = 0;
