@@ -89,8 +89,8 @@ export default class CityStatsContainer {
             r = (data - 100) * 255 / (med - 100);
             g = 200 - (data - 100) * 200 / (med - 100);
         } else {
-            g = 200 - (data - med) * 200 / ((max - med));
-            b = (data - med) * 255 / ((max - med));
+            g = 200 - (data - med) * 200 / (max - med);
+            b = (data - med) * 255 / (max - med);
         }
         return ('rgb(' + r + ', '+ g +', ' + b + ')');
     }
