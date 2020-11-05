@@ -22,20 +22,17 @@ export default class CityStatsContainer {
 
         var x = d3.scaleLinear().range([0, 500]);
             var y = d3.scaleLinear().range([500, 0]);
-        
+
         x.domain([0, 50]);
         y.domain([0, 50]);
-        
+
         var point = {"x": 24, "y": 31}
-        
+
         var poly = [{"x":10, "y":50},
                 {"x":20,"y":20},
                 {"x":50,"y":10},
                 {"x":30,"y":30}];
-        
-        // console.log("==================================================================================");
-        // console.log(geojson.coordinates)
-        // console.log("==================================================================================");
+
         svg.selectAll("polygon")
             .data(geojson.coordinates)
         .enter().append("polygon")
@@ -49,20 +46,6 @@ export default class CityStatsContainer {
                     return [x(d[0]),y(d[1])].join(",");
                 }).join(" ");
             });
-        
-        svg.append("circle")
-            .attr("r", 4)
-            .attr("cx", x(point.x))
-            .attr("cy", y(point.y))
-        
-            // add the X Axis
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
-
-        // add the Y Axis
-        svg.append("g")
-            .call(d3.axisLeft(y));
     }
 
     
