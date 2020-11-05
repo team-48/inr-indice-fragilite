@@ -1,3 +1,5 @@
+import GeneratePdfBtnComponent from "../generate-pdf-btn/generate-pdf-btn.component.js";
+
 export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
@@ -10,6 +12,10 @@ export default class CityStatsContainer {
         this.city = city;
         this.loadCity(() => {
             this.container.innerHTML = this.render();
+            if (this.city != null) {
+                this.generatePDFBtn = new GeneratePdfBtnComponent();
+                this.generatePDFBtn.update();
+            }
         });
     }
 
@@ -26,17 +32,43 @@ export default class CityStatsContainer {
         })
     }
 
+    averageData() {
+        let moyenneInterfaceNumeriques = 0;
+        let moyenneAccesInfo = 0;
+        let moyenneCompetencesAdmin = 0;
+        let moyenneCompetencesNumeriquesScolaires = 0;
+        let moyenneAcces = 0;
+        let moyenneCompetence = 0;
+        let moyenneScoreGlobal = 0;
+        this.cityStats.forEach(function(stat) {
+            moyenneInterfaceNumeriques += parseFloat(stat['ACCÈS AUX INTERFACES NUMERIQUES region 1']);
+            moyenneAccesInfo += parseFloat(stat['ACCES A L\'INFORMATION region 1']);
+            moyenneCompetencesAdmin += parseFloat(stat['COMPETENCES ADMINISTATIVES region 1']);
+            moyenneCompetencesNumeriquesScolaires += parseFloat(stat['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']);
+            moyenneAcces += parseFloat(stat['GLOBAL ACCES region 1']);
+            moyenneCompetence += parseFloat(stat['GLOBAL COMPETENCES region 1']);
+            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region * ']);
+        });
+        return {
+            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats.length,
+            'moyenneAccesInfo': moyenneAccesInfo / this.cityStats.length,
+            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / this.cityStats.length,
+            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / this.cityStats.length,
+            'moyenneAcces': moyenneAcces / this.cityStats.length,
+            'moyenneCompetences': moyenneCompetence / this.cityStats.length,
+            'moyenneScoreGlobal': moyenneScoreGlobal / this.cityStats.length
+        }
+    }
+
     render() {
+        const averages = this.averageData();
+
         if (this.city !== null && this.cityStats !== null) {
             return `
 
     <div class="stats-header">
         <h1>${this.city.cityName} (${this.city.postalCode})</h1>
-        <div class="center-vertically">
-            <div class="btn" onclick="generatePDF()">
-                <p>Télécharger</p>
-            </div>
-        </div>
+        <div class="center-vertically" id="generate-pdf-btn-container"></div>
     </div>
 
     <div class="top">
@@ -44,37 +76,37 @@ export default class CityStatsContainer {
         <div class="left">
             <div class="bloc stat">
                 <p>Accès aux interfaces numériques</p>
-                <h1 class="number">21</h1>
+                <h1 class="number">${averages['moyenneInterfaceNumerique'].toFixed(2)}</h1>
             </div>
 
             <div class="bloc stat">
                 <p>Accès à l'information</p>
-                <h1 class="number">71</h1>
+                <h1 class="number">${averages['moyenneAccesInfo'].toFixed(2)}</h1>
             </div>
 
             <div class="bloc stat">
                 <p>Compétences administratives</p>
-                <h1 class="number">122</h1>
+                <h1 class="number">${averages['moyenneCompetencesAdmin'].toFixed(2)}</h1>
             </div>
 
             <div class="bloc stat">
                 <p>Compétences numériques / scolaires</p>
-                <h1 class="number">46</h1>
+                <h1 class="number">${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}</h1>
             </div>
 
             <div class="bloc stat">
                 <p>Accès</p>
-                <h1 class="number">46</h1>
+                <h1 class="number">${averages['moyenneAcces'].toFixed(2)}</h1>
             </div>
 
             <div class="bloc stat">
                 <p>Compétences</p>
-                <h1 class="number">82</h1>
+                <h1 class="number">${averages['moyenneCompetences'].toFixed(2)}</h1>
             </div>
 
             <div class="bloc stat">
                 <p>Score global</p>
-                <h1 class="number">64</h1>
+                <h1 class="number">${averages['moyenneScoreGlobal'].toFixed(2)}</h1>
             </div>
         </div>
 

@@ -183,10 +183,6 @@ header .search-field:focus {
     justify-content: space-between;
 }
 
-.stats .stats-header .btn {
-    display: none;
-}
-
 .stats .top {
     display: flex;
     justify-content: space-between;
