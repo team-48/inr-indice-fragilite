@@ -21,7 +21,7 @@ class CityStatsController
         $departementCode = substr($comCode, 0, 2);
         $rows = new ParserService($departementCode, ";");
 
-        $response->getBody()->write(json_encode($rows->filterByComCode($comCode)));
+        $response->getBody()->write(json_encode($rows->filterByComCode($comCode), JSON_UNESCAPED_UNICODE));
         return $response->withAddedHeader('Content-Type', 'application/json');
     }
 }
