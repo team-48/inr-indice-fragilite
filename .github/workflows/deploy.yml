@@ -14,6 +14,10 @@ jobs:
 
       - name: Install dependencies
         uses: php-actions/composer@v2
+      - name: Minify JS and CSS
+        uses: nizarmah/auto-minify@master
+        with:
+          js-engine: uglify-js
 
   deploy:
     runs-on: [ ubuntu-latest ]
