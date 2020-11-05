@@ -10,6 +10,8 @@ class LandingController
 {
     public function Index(Request $request, Response $response, array $args): Response {
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'landing.twig');
+        return $view->render($response, 'landing.twig', [
+            'baseUrl' => $_SERVER['HTTP_HOST']
+        ]);
     }
 }
