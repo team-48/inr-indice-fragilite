@@ -7,7 +7,8 @@ use App\Domain\Views\CityStatsScoring;
 
 class ParserService implements IParserService
 {
-    private static int $COLUMN_CITY_CODE = 10;
+    private static string $COLUMN_CITY_CODE = "COM";
+    private static string $COLUMN_CITY_DEPARTMENT = "Insee Dep";
     private static string $COLUMN_CITY_DEPARTMENT_SCORE = "SCORE GLOBAL departement 1";
     private static string $COLUMN_CITY_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
     private static string $COLUMN_CITY_ACCESS_SCORE = "GLOBAL ACCES departement 1";
@@ -38,7 +39,9 @@ class ParserService implements IParserService
 
         $headers = $this->statisticsRepository->getStatsHeader();
 
-        $scoring = $this->computeScoring($headers, $cities);
+        $query_type = "department";
+        $scoring = $this->computeScoring($headers, $cities, $query_type, $departmentCode);
+
 
         $citiesForCityCode = $this->filterCityByCityCode($headers, $cities, $cityCode);
 
@@ -91,7 +94,8 @@ class ParserService implements IParserService
 
         foreach ($cities as $city)
         {
-            if (strcmp($city[self::$COLUMN_CITY_CODE], $value) === 0)
+            $codIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_CODE);
+            if (strcmp($city[$codIndex], $value) === 0)
             {
                 array_push($filteredCities, $this->formatRowWithHeader($city, $headers));
             }
@@ -100,8 +104,14 @@ class ParserService implements IParserService
         return $filteredCities;
     }
 
-    private function computeScoring(array $headers, array $cities)
+    private function computeScoring(array $headers, array $cities, string $query_type = "region", string $departmentCode = null)
     {
+        if (strcmp($query_type, "department") === 0){
+            $cities = array_filter($cities, function ($var) use ($departmentCode, $headers) {
+                return (strcmp($var[$this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT)], $departmentCode) === 0);
+            });
+        }
+
         $result = new CityStatsScoring();
 
         foreach ($cities as $city)

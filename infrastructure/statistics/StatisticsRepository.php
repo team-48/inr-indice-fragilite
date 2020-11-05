@@ -14,7 +14,16 @@ class StatisticsRepository implements IStatisticsRepository
      */
     public function getCityStatsByDepartment(string $departmentCode): array
     {
-        $file = __DIR__ . "/data/{$departmentCode}.csv";
+        $regDeptMapper = file_get_contents(__DIR__ . "/reg-dept-mapper.json");
+        $jsonMapper = json_decode($regDeptMapper, true);
+        $depCodeColumn = 'codeDepartement';
+
+        $regionForDepartment = array_filter($jsonMapper, function (array $item) use ($departmentCode, $depCodeColumn) {
+            return preg_match("/^${departmentCode}/m", $item[$depCodeColumn]) != 0;
+        });
+
+        $keyElement = array_key_first($regionForDepartment);
+        $file = __DIR__ . "/data/{$regionForDepartment[$keyElement]["codeRegion"]}.csv";
 
         $data = [];
 
