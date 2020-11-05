@@ -37,7 +37,6 @@ export default class CityStatsContainer {
         {
             fetch(`${window.location.href}stats/${this.city.cityCode}`).then(response => {
                 response.json().then(result => {
-                    console.log(result);
                     this.cityStats = result;
                     localStorage.setItem(this.city.postalCode, JSON.stringify(result));
                     onCityLoaded();
