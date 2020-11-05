@@ -15,4 +15,4 @@ If you have `make` command, so just type `make run.reset` on root project direct
 
 ## Access to SonarQube
 
-If you want to access to sonarQube you can go here http://146.59.196.31:9000
+If you want to access to sonarQube you can go here http://vps-fcce3289.vps.ovh.net:9000
