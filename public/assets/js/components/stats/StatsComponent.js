@@ -4,12 +4,13 @@ export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
         this.cityStats = null
+        this.context = 'department';
         this.update();
     }
 
     update(city = null) {
         this.city = city;
-        this.loadCity(() => {
+        this.loadCity(this.context,() => {
             this.container.innerHTML = this.render();
             if (this.city != null) {
                 this.generatePDFBtn = new GeneratePdfBtnComponent();
@@ -32,7 +33,28 @@ export default class CityStatsContainer {
                     document.getElementById('more-stats').style.height = 'auto';
                     document.getElementById('show-more-txt').innerText = "Fermer";
                 }
+            });
+        }
 
+        const regionBtn = document.querySelector('#regionBtn');
+        const departementBtn = document.querySelector('#departementBtn');
+        if (regionBtn && departementBtn) {
+            regionBtn.addEventListener('click', () => {
+                if (this.context === 'department') {
+                    departementBtn.classList.remove('switch-btn-active');
+                    regionBtn.classList.add('switch-btn-active');
+                    this.context = 'region';
+                    this.update(this.city);
+                }
+            });
+
+            departementBtn.addEventListener('click', () => {
+                if (this.context === 'region') {
+                    regionBtn.classList.remove('switch-btn-active');
+                    departementBtn.classList.add('switch-btn-active');
+                    this.context = 'department';
+                    this.update(this.city);
+                }
             });
         }
 
@@ -70,30 +92,31 @@ export default class CityStatsContainer {
         }
     }
 
-    loadCity(onCityLoaded, onCityLoadFail) {
+    loadCity(context, onCityLoaded, onCityLoadFail) {
         if (this.city === null) {
             onCityLoadFail();
             return;
         }
-        if (!localStorage.getItem(this.city.postalCode))
+        if (!localStorage.getItem(this.city.postalCode + '-' + this.context))
         {
-            fetch(`${window.location.href}stats/${this.city.cityCode}`).then(response => {
+            fetch(`${window.location.href}stats/${this.city.cityCode}?type=${context}`).then(response => {
                 response.json().then(result => {
                     this.cityStats = result;
-                    localStorage.setItem(this.city.postalCode, JSON.stringify(result));
+                    localStorage.setItem(this.city.postalCode + '-' + this.context, JSON.stringify(result));
                     onCityLoaded();
                 });
             });
         }
         else
         {
-            const result = JSON.parse(localStorage.getItem(this.city.postalCode));
+            const result = JSON.parse(localStorage.getItem(this.city.postalCode + '-' + this.context));
             this.cityStats = result;
             onCityLoaded();
         }
     }
 
     averageData() {
+        const localContext = this.context === 'department' ? 'departement' : 'region';
         let moyenneInterfaceNumeriques = 0;
         let moyenneAccesInfo = 0;
         let moyenneCompetencesAdmin = 0;
@@ -102,13 +125,13 @@ export default class CityStatsContainer {
         let moyenneCompetence = 0;
         let moyenneScoreGlobal = 0;
         this.cityStats['cities'].forEach(function(stat) {
-            moyenneInterfaceNumeriques += parseFloat(stat['ACCÈS AUX INTERFACES NUMERIQUES region 1']);
-            moyenneAccesInfo += parseFloat(stat['ACCES A L\'INFORMATION region 1']);
-            moyenneCompetencesAdmin += parseFloat(stat['COMPETENCES ADMINISTATIVES region 1']);
-            moyenneCompetencesNumeriquesScolaires += parseFloat(stat['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']);
-            moyenneAcces += parseFloat(stat['GLOBAL ACCES region 1']);
-            moyenneCompetence += parseFloat(stat['GLOBAL COMPETENCES region 1']);
-            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL region 1']);
+            moyenneInterfaceNumeriques += parseFloat(stat['ACCÈS AUX INTERFACES NUMERIQUES ' + localContext + ' 1']);
+            moyenneAccesInfo += parseFloat(stat['ACCES A L\'INFORMATION ' + localContext + ' 1']);
+            moyenneCompetencesAdmin += parseFloat(stat['COMPETENCES ADMINISTATIVES ' + localContext + ' 1']);
+            moyenneCompetencesNumeriquesScolaires += parseFloat(stat['COMPÉTENCES NUMÉRIQUES / SCOLAIRES ' + localContext + ' 1']);
+            moyenneAcces += parseFloat(stat['GLOBAL ACCES ' + localContext + ' 1']);
+            moyenneCompetence += parseFloat(stat['GLOBAL COMPETENCES ' + (localContext === "departement" ? ' ' : '') + localContext + ' 1']);
+            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL ' + localContext + ' 1']);
         });
         return {
             'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats['cities'].length,
@@ -202,6 +225,7 @@ export default class CityStatsContainer {
 
     render() {
         if (this.city !== null && this.cityStats !== null) {
+            const localContext = this.context === 'department' ? 'departement' : 'region';
             const averages = this.averageData();
             return `<div id="city_stats_loader_container"></div>
                     <div class="stats-header">
@@ -211,10 +235,10 @@ export default class CityStatsContainer {
                     
                     <div class="toolbar">
                         <div class="switch-comparison">
-                            <div class="switch-btn">
+                            <div class="switch-btn ${this.context === 'region' ? 'switch-btn-active' : ''}" id="regionBtn">
                                 <p>Région</p>   
                             </div>
-                            <div class="switch-btn switch-btn-active">
+                            <div class="switch-btn ${this.context === 'department' ? 'switch-btn-active' : ''}" id="departementBtn">
                                 <p>Département</p>   
                             </div>
                         </div>
@@ -337,31 +361,31 @@ export default class CityStatsContainer {
                                             </tr>
                                             <tr>
                                                 <td>Accès à l'information</td>
-                                                <td>${parseFloat(bloc['ACCES A L\'INFORMATION region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['ACCES A L\'INFORMATION ' + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Accès aux interfaces numériques</td>
-                                                <td>${parseFloat(bloc['ACCÈS AUX INTERFACES NUMERIQUES region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['ACCÈS AUX INTERFACES NUMERIQUES ' + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Compétences administratives</td>
-                                                <td>${parseFloat(bloc['COMPETENCES ADMINISTATIVES region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['COMPETENCES ADMINISTATIVES ' + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Compétences numériques et scolaires</td>
-                                                <td>${parseFloat(bloc['COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['COMPÉTENCES NUMÉRIQUES / SCOLAIRES ' + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Score global accès</td>
-                                                <td>${parseFloat(bloc['GLOBAL ACCES region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['GLOBAL ACCES ' + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Score global compétences</td>
-                                                <td>${parseFloat(bloc['GLOBAL COMPETENCES region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['GLOBAL COMPETENCES ' + (localContext === "departement" ? ' ' : '') + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Score global</td>
-                                                <td>${parseFloat(bloc['SCORE GLOBAL region 1']).toFixed(2)}</td>
+                                                <td>${parseFloat(bloc['SCORE GLOBAL ' + localContext + ' 1']).toFixed(2)}</td>
                                             </tr>
                                         </tbody>
                                     </table>

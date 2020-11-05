@@ -284,6 +284,7 @@ header #search_form_loader #search-field-loader {
     padding: 6px 20px;
     cursor: pointer;
     border-radius: 0.75rem;
+    transition: 0.1s;
 }
 
 .stats .switch-comparison .switch-btn:first-child {
@@ -297,7 +298,7 @@ header #search_form_loader #search-field-loader {
 
 .stats .switch-comparison .switch-btn-active {
     background-color: #0052ea;
-    transition: 0.3s;
+    transition: 0.1s;
     box-shadow: 0 6px 12px rgba(140,152,164,.325);
 }
 
