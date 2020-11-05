@@ -3,11 +3,13 @@
 namespace App\Domain\Services\Parser;
 
 use App\Domain\Repositories\IStatisticsRepository;
+use App\Domain\Views\CityStatsScoring;
 
 class ParserService implements IParserService
 {
     private static int $COLUMN_CITY_CODE = 10;
     private static int $COLUMN_CITY_NAME = 0;
+    private static string $COLUMN_CITY_DEPARTMENT_SCORE = "SCORE GLOBAL departement 1";
 
     private IStatisticsRepository $statisticsRepository;
 
@@ -28,7 +30,19 @@ class ParserService implements IParserService
 
         $cities = $this->statisticsRepository->getCityStatsByDepartment($departmentCode);
 
-        return $this->filterCityByCityCode($cities, $cityCode);
+        $headers = $this->statisticsRepository->getStatsHeader();
+
+        $scoring = $this->computeScoring($headers, $cities);
+
+        $city =  $this->filterCityByCityCode($headers, $cities, $cityCode);
+
+        $city[0]['scoring'] = $scoring;
+
+        return $city;
+    }
+
+    private function getColumnIndexByName(array $headers, string $name) {
+        return array_search($name, $headers);
     }
 
     /**
@@ -51,17 +65,16 @@ class ParserService implements IParserService
 
     /**
      * Filter cities by city code
+     * @param array $headers
      * @param array $cities
      * @param string $value
      * @return array
      */
-    private function filterCityByCityCode(array $cities, string $value)
-    {
+    private function filterCityByCityCode(array $headers, array $cities, string $value) {
         if ($value[0] === "0") {
             $value = substr($value, 1);
         }
 
-        $headers = $this->statisticsRepository->getStatsHeader();
         $filteredCities = array();
 
         foreach ($cities as $city) {
@@ -71,5 +84,20 @@ class ParserService implements IParserService
         }
 
         return $filteredCities;
+    }
+
+    private function computeScoring(array $headers, array $cities) {
+        $result = new CityStatsScoring();
+
+        foreach ($cities as $city) {
+            $departmentScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT_SCORE);
+            $departmentScore = (int)$city[$departmentScoreIndex];
+
+            if ($departmentScore > $result->department) {
+                $result->department = $departmentScore;
+            }
+        }
+
+        return $result;
     }
 }
