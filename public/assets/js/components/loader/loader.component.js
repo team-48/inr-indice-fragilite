@@ -1,8 +1,7 @@
 
 export default class LoaderComponent {
-    constructor(id, loaderId = null) {
-        this.container = document.querySelector('#' + id);
-        this.id = id;
+    constructor(container, loaderId = null) {
+        this.container = document.querySelector(container);
         this.loaderId = loaderId;
         this.container.innerHTML = this.render();
     }

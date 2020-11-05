@@ -7,7 +7,7 @@ export default class SearchInputContainer {
         this.cityComponent = new CityListContainer();
         this.container.innerHTML = this.render();
         this.afterViewInit();
-        this.loader = new LoaderComponent('search_form_loader', 'search-field-loader');
+        this.loader = new LoaderComponent('#search_form_loader', 'search-field-loader');
     }
 
     searchCity(postalCode) {
