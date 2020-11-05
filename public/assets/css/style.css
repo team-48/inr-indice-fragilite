@@ -126,8 +126,8 @@ header .search-field:focus {
 
 .no-cities {
     width: 60%;
-    height: calc(100vh - 60px);
-    margin: 60px auto 0;
+    height: calc(100vh - 210px);
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -141,7 +141,8 @@ header .search-field:focus {
 .content {
     width: 80%;
     min-height: calc(100vh - 190px);
-    margin: 70px auto 0;
+    margin: 60px auto 0;
+    padding-top: 10px;
 }
 
 .search-results {
@@ -287,6 +288,7 @@ footer {
     height: 100px;
     background-color: #eee;
     padding: 10px 10%;
+    z-index: 9;
 }
 
 footer p, footer a {

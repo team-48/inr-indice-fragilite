@@ -1,11 +1,15 @@
 export default class GeneratePdfBtnComponent {
     constructor() {
         this.container = document.querySelector('#generate-pdf-btn-container');
-        this.container.innerHTML = this.render();
+        if (this.container) {
+            this.container.innerHTML = this.render();
+        }
     }
 
     update() {
-        this.container.innerHTML = this.render();
+        if (this.container) {
+            this.container.innerHTML = this.render();
+        }
         this.afterViewInit();
     }
 
@@ -16,9 +20,11 @@ export default class GeneratePdfBtnComponent {
 
     afterViewInit() {
         const downloadBtn = document.querySelector('#download-btn');
-        downloadBtn.addEventListener('click', () => {
-            this.generatePDF();
-        })
+        if (downloadBtn != null) {
+            downloadBtn.addEventListener('click', () => {
+                this.generatePDF();
+            });
+        }
     }
 
     render() {

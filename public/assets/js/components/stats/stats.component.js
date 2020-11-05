@@ -10,13 +10,14 @@ export default class CityStatsContainer {
     update(city = null) {
         this.city = city;
         this.loadCity(() => {
-            this.update(city);
             if (this.city != null) {
+                this.container.innerHTML = this.render();
                 this.generatePDFBtn = new GeneratePdfBtnComponent();
                 this.generatePDFBtn.update();
                 this.afterViewInit();
             }
         });
+        this.container.innerHTML = this.render();
     }
 
     afterViewInit() {
