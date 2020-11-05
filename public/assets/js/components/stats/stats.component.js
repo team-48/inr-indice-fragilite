@@ -1,3 +1,5 @@
+import GeneratePdfBtnComponent from "../generate-pdf-btn/generate-pdf-btn.component.js";
+
 export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
@@ -7,6 +9,10 @@ export default class CityStatsContainer {
     update(city = null) {
         this.city = city;
         this.container.innerHTML = this.render();
+        if (this.city != null) {
+            this.generatePDFBtn = new GeneratePdfBtnComponent();
+            this.generatePDFBtn.update();
+        }
     }
 
     render() {
@@ -15,11 +21,7 @@ export default class CityStatsContainer {
 
     <div class="stats-header">
         <h1>${this.city.cityName} (${this.city.postalCode})</h1>
-        <div class="center-vertically">
-            <div class="btn" onclick="generatePDF()">
-                <p>Télécharger</p>
-            </div>
-        </div>
+        <div class="center-vertically" id="generate-pdf-btn-container"></div>
     </div>
 
     <div class="top">
