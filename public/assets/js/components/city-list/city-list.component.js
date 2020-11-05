@@ -17,7 +17,7 @@ export default class CityListContainer {
             cityElement.addEventListener('click', () => {
                 this.update();
                 this.cityStatsComponent.update(city);
-            })
+            });
         })
     }
 
