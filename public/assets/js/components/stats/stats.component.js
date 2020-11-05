@@ -128,7 +128,7 @@ export default class CityStatsContainer {
                             <div class="bloc" id="gradient-explanations-content">
                                 <p>
                                 Les données sont collorées afin d'indiquer la qualité des indicateurs pour la localité
-                                données par rapport au département ou à la région : un chiffre vert représente une donnée
+                                donnée par rapport au département ou à la région : un chiffre vert représente une donnée
                                 meilleure que la majorité du département ou de la région, tandis qu'un chiffre rouge illustre
                                 un indicateur médiocre en comparaison aux autres localités concernées.
                                 </p>               

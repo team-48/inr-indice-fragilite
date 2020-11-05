@@ -287,8 +287,8 @@ header #search_form_loader #search-field-loader {
 .stats .toolbar .gradient-container #gradient-explanations-content {
     display: none;
     position: absolute;
-    right: -300px;
-    width: 300px;
+    right: -400px;
+    width: 400px;
     background: white;
     border-radius: 0.75rem;
     z-index: 3;
