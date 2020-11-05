@@ -18,6 +18,16 @@ input:focus, textarea:focus {
     color: #0052ea;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .center-vertically {
     display: flex;
     justify-content: center;
@@ -89,8 +99,8 @@ header {
 }
 
 header .logo {
-    height: 50px;
-    margin-top: 5px;
+    height: 40px;
+    margin-top: 10px;
 }
 
 header .search-bloc {
@@ -100,10 +110,11 @@ header .search-bloc {
 
 header #search_input_container {
     width: 100%;
+    position: relative;
 }
 
 header .search-field {
-    width: 100%;
+    width: calc(100% - 44px);
     height: 40px;
     margin-top: 10px;
     margin-left: 20px;
@@ -124,10 +135,40 @@ header .search-field:focus {
     border: 1px solid #ddd;
 }
 
+header #search_form_loader {
+    width: 34px;
+    height: 34px;
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    border-radius: 50%;
+}
+
+header #search_form_loader #search-field-loader {
+    display: none;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    border-top: 2px solid #999;
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
 .no-cities {
     width: 60%;
-    height: calc(100vh - 60px);
-    margin: 60px auto 0;
+    height: calc(100vh - 210px);
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -140,7 +181,9 @@ header .search-field:focus {
 
 .content {
     width: 80%;
-    margin: 70px auto 0;
+    min-height: calc(100vh - 190px);
+    margin: 60px auto 0;
+    padding-top: 10px;
 }
 
 .search-results {
@@ -179,9 +222,122 @@ header .search-field:focus {
     text-overflow: ellipsis;
 }
 
+.stats #city_stats_loader_container {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    border-radius: 50%;
+}
+
+.stats #city_stats_loader_container #city-stats-loader {
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    border-top: 2px solid #999;
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+
 .stats .stats-header {
     display: flex;
     justify-content: space-between;
+}
+
+.stats .toolbar {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats .toolbar .switch-comparison {
+    width: fit-content;
+    display: flex;
+    background-color: #eee;
+    border-radius: 0.75rem;
+    margin: 10px 0;
+}
+
+.stats .switch-comparison .switch-btn {
+    padding: 6px 20px;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+.stats .switch-comparison .switch-btn:first-child {
+    margin-right: 10px;
+}
+
+.stats .switch-comparison .switch-btn p {
+    color: #8c98a4;
+    margin: 0;
+}
+
+.stats .switch-comparison .switch-btn-active {
+    background-color: #0052ea;
+    transition: 0.3s;
+    box-shadow: 0 6px 12px rgba(140,152,164,.325);
+}
+
+.stats .switch-comparison .switch-btn-active p {
+    color: white;
+}
+
+.stats .toolbar .gradient-container {
+    position: relative;
+    display: flex;
+    width: 120px;
+    height: 20px;
+}
+
+.stats .toolbar .gradient-container .gradient {
+    width: 80px;
+    height: 10px;
+    margin-top: 20px;
+    background: linear-gradient(to right, rgb(0, 200, 0), rgb(255, 0, 0));
+    border-radius: 0.75rem;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations {
+    display: block;
+    font-size: 12px;
+    border: 1px solid #aaa;
+    margin: 16px 0 0 16px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations p {
+    margin: 0;
+    color: #aaa;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations-content {
+    display: none;
+    position: absolute;
+    right: -400px;
+    width: 400px;
+    background: white;
+    border-radius: 0.75rem;
+    z-index: 3;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations-content p {
+    margin: 12px;
+    line-height: 1.5;
+    font-size: 13px;
+    color: #677788;
+}
+
+.stats .toolbar .gradient-container #gradient-explanations:hover ~ #gradient-explanations-content {
+    display: block;
 }
 
 .stats .top {
@@ -193,36 +349,77 @@ header .search-field:focus {
     width: 50%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .stats .top .left .stat {
+    position: relative;
     width: 250px;
-    height: 100px;
+    min-height: 100px;
     padding: 6px 12px;
     margin: 6px;
 }
 
+.stats .top .left .stat-full {
+    width: 100%;
+}
+
+.stats .top .left .stat-column {
+    width: 47%;
+    padding: 0;
+}
+
 .stats .top .left .stat .number {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    text-align: right;
     margin: 0;
     font-size: 28px;
     transition: 0.3s;
 }
 
-.stats .top .left .stat:hover .number {
-    color: #0052ea;
-    transition: 0.3s;
+.stats .top .left .stat-full .number {
+    font-size: 42px;
+}
+
+.stats .top .left .stat-column .number {
+    bottom: auto;
+    top: 10px;
+}
+
+.stats .top .left .stat-column .stat {
+    width: 86%;
+    margin: 6px auto;
+}
+
+.stats .top .left .stat-column .stat .number {
+    bottom: 10px;
+    top: auto;
+}
+
+.stats .top .left .stat .number-good {
+    color: darkgreen;
+}
+
+.stats .top .left .stat .number-warning {
+    color: darkorange;
+}
+
+.stats .top .left .stat .number-bad {
+    color: darkred;
 }
 
 .stats .top .right {
     width: 48%;
 }
 
-.stats .top .right .map {
+.stats .top .right .explain {
     margin-top: 6px;
 }
 
-.stats .top .right .map img {
-    width: 100%;
+.stats .top .right .explain p {
+    margin: 16px;
 }
 
 .stats .show-more {
@@ -279,6 +476,19 @@ header .search-field:focus {
 .stats .more-stats-expanded {
     transform: scaleY(1);
     transition: 0.5s;
+}
+
+footer {
+    width: 80%;
+    height: 100px;
+    background-color: #eee;
+    padding: 10px 10%;
+    z-index: 9;
+}
+
+footer p, footer a {
+    color: #8c98a4;
+    font-size: 11px;
 }
 
 @media screen and (max-width: 1439px ) {
