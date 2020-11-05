@@ -12,7 +12,7 @@ jobs:
       - name: Minify JS and CSS
         uses: nizarmah/auto-minify@master
         with:
-          js-engin: uglify-js
+          js-engine: uglify-js
       - name: SSH Server Deploy
         uses: kostya-ten/ssh-server-deploy@v3
         with:
