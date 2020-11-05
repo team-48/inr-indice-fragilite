@@ -9,8 +9,6 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v1
-      - name: Minify JS and CSS
-        uses: nizarmah/auto-minify@master
       - name: SSH Server Deploy
         uses: kostya-ten/ssh-server-deploy@v3
         with:

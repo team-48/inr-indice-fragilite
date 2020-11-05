@@ -2,26 +2,35 @@
 
 namespace App\Controllers;
 
-use Fig\Http\Message\StatusCodeInterface;
+use App\Domain\Services\Parser\IParserService;
 use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Domain\Services\Parser\ParserService;
 
 
 class CityStatsController
 {
+    private IParserService $parserService;
+
     /**
-     * @param Request $request
+     * CityStatsController constructor.
+     * @param IParserService $parserService
+     */
+    public function __construct(IParserService $parserService)
+    {
+        $this->parserService = $parserService;
+    }
+
+    /**
+     * Get city statistics by city code
      * @param Response $response
      * @param array $args
      * @return Response
      */
-    public function getCitiesByComCode(Request $request, Response $response, array $args): Response {
+    public function getCitiesByComCode(Response $response, array $args): Response {
         $comCode = $args['communeCod'];
-        $departementCode = substr($comCode, 0, 2);
-        $rows = new ParserService($departementCode, ";");
 
-        $response->getBody()->write(json_encode($rows->filterByComCode($comCode)));
+        $cityStats = $this->parserService->getCityStatisticsByCityCode($comCode);
+
+        $response->getBody()->write(json_encode($cityStats, JSON_UNESCAPED_UNICODE));
         return $response->withAddedHeader('Content-Type', 'application/json');
     }
 }

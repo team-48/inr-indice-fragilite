@@ -2,117 +2,74 @@
 
 namespace App\Domain\Services\Parser;
 
+use App\Domain\Repositories\IStatisticsRepository;
+
 class ParserService implements IParserService
 {
-    protected string $csv;
+    private static int $COLUMN_CITY_CODE = 10;
+    private static int $COLUMN_CITY_NAME = 0;
 
-    protected array $data = array();
+    private IStatisticsRepository $statisticsRepository;
 
-    protected array $headers = array();
-
-    protected  int $limit = 0;
-
-    protected string $delimiter;
-
-    protected string $inseeDept;
-
-    protected int $comCodeColumnIndex = 10;
-
-    protected int $cityNameColumnIndex = 0;
-
-    public function __construct($inseeDept = null, $delimiter = ";")
+    /**
+     * ParserService constructor.
+     * @param IStatisticsRepository $statisticsRepository
+     */
+    public function __construct(IStatisticsRepository $statisticsRepository)
     {
-        if (strlen($inseeDept) > 0) {
-            $this->setinseeDept($inseeDept);
-            $this->setCsv($this->inseeDept);
-            $this->setDelimeter($delimiter);
-            $this->setHeaders();
-            $this->parse();
-        }
+        $this->statisticsRepository = $statisticsRepository;
     }
 
-    public function setinseeDept($inseeDept)
-    {
-        $this->inseeDept = $inseeDept;
+    /**
+     * @inheritdoc
+     */
+    public function getCityStatisticsByCityCode(string $cityCode): array {
+        $departmentCode = substr($cityCode, 0, 2);
+
+        $cities = $this->statisticsRepository->getCityStatsByDepartment($departmentCode);
+
+        return $this->filterCityByCityCode($cities, $cityCode);
     }
 
-    public function setHeaders()
-    {
-        $fileHandle = fopen(__DIR__ . "/../../../infrastructure/cities/data/dept_list/headers.csv", "r");
-        $row = fgetcsv($fileHandle, $this->limit, $this->delimiter);
-        $this->headers = $row;
-        fclose($fileHandle);
-    }
-
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
-
-    public function setCsv($inseeDept)
-    {
-        $this->csv = __DIR__ . "/../../../infrastructure/cities/data/dept_list/{$inseeDept}.csv";
-    }
-
-    public function setDelimeter($delimiter)
-    {
-        $this->delimiter = $delimiter;
-    }
-
-    public function getCsv()
-    {
-        return $this->csv;
-    }
-
-    public function parse()
-    {
-        $fileHandle = fopen($this->getCsv(), "r");
-        $rowIndex = 0;
-
-        while (($row = fgetcsv($fileHandle, $this->limit, $this->delimiter)) !== FALSE ) {
-            $this->data[$rowIndex] = $row;
-            $rowIndex++;
-        }
-        fclose($fileHandle);
-    }
-
-    public function filterByName(string $value)
-    {
-        $rows = array();
-
-        foreach ($this->data as $row) {
-            if (strcmp($row[$this->cityNameColumnIndex], $value) === 0 ){
-                array_push($rows, $row);
-            }
-        }
-
-        return $rows;
-    }
-
-    public function formatRowWithHeader(array $row) {
+    /**
+     * Add headers to city
+     * @param array $row
+     * @param array $headers
+     * @return array
+     */
+    private function formatRowWithHeader(array $row, array $headers) {
         $arr = array();
         $i = 0;
 
         foreach ($row as $elt) {
-            $arr[$this->getHeaders()[$i]] = $elt;
+            $arr[$headers[$i]] = $elt;
             $i++;
         }
 
         return $arr;
     }
 
-    public function filterByComCode(string $value)
+    /**
+     * Filter cities by city code
+     * @param array $cities
+     * @param string $value
+     * @return array
+     */
+    private function filterCityByCityCode(array $cities, string $value)
     {
-        if ($value[0] === "0") $value = substr($value, 1);
+        if ($value[0] === "0") {
+            $value = substr($value, 1);
+        }
 
-        $rows = array();
+        $headers = $this->statisticsRepository->getStatsHeader();
+        $filteredCities = array();
 
-        foreach ($this->data as $row) {
-            if (strcmp($row[$this->comCodeColumnIndex], $value) === 0 ){
-                array_push($rows, $this->formatRowWithHeader($row));
+        foreach ($cities as $city) {
+            if (strcmp($city[self::$COLUMN_CITY_CODE], $value) === 0 ){
+                array_push($filteredCities, $this->formatRowWithHeader($city, $headers));
             }
         }
 
-        return $rows;
+        return $filteredCities;
     }
 }
