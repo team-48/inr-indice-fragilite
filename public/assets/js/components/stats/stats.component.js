@@ -70,22 +70,6 @@ export default class CityStatsContainer {
         }
     }
 
-    __colorData(data, max) {
-        const step = (max - 100) / 4;
-        console.log(max);
-        if (data <= 100 + step) {
-            return '#40b01e';
-        } else if (data > 100 + step && data <= 100 + step) {
-            return '#a4ab27';
-        } else if (data > 100 + step && data <= 100 + 2 * step) {
-            return '#d19e11';
-        } else if (data > 100 + 2 * step && data <= 100 + 3 * step) {
-            return '#d16b11';
-        } else {
-            return '#d11111';
-        }
-    }
-
     colorData(data, max) {
         const med = (max + 100) / 2
         let r = 0, g = 0, b = 0;
