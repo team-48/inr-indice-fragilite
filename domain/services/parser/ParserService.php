@@ -34,11 +34,11 @@ class ParserService implements IParserService
 
         $scoring = $this->computeScoring($headers, $cities);
 
-        $city =  $this->filterCityByCityCode($headers, $cities, $cityCode);
+        $citiesForCityCode =  $this->filterCityByCityCode($headers, $cities, $cityCode);
 
         return [
             'scoring' => $scoring,
-            'cities' => $city
+            'cities' => $citiesForCityCode
         ];
     }
 
