@@ -1,16 +1,33 @@
 export default class CityStatsContainer {
     constructor() {
         this.container = document.querySelector('#city_statistic_container');
+        this.cityStats = null
+
         this.update();
     }
 
     update(city = null) {
         this.city = city;
-        this.container.innerHTML = this.render();
+        this.loadCity(() => {
+            this.container.innerHTML = this.render();
+        });
+    }
+
+    loadCity(onCityLoaded) {
+        if (this.city === null) {
+            return;
+        }
+
+        fetch(`${window.location.href}stats/${this.city.cityCode}`).then(response => {
+            response.json().then(result => {
+                this.cityStats = result;
+                onCityLoaded();
+            })
+        })
     }
 
     render() {
-        if (this.city != null) {
+        if (this.city !== null && this.cityStats !== null) {
             return `
 
     <div class="stats-header">

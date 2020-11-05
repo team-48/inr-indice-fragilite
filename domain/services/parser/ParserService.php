@@ -4,21 +4,21 @@ namespace App\Domain\Services\Parser;
 
 class ParserService implements IParserService
 {
-    protected $csv;
+    protected string $csv;
 
-    protected $data = array();
+    protected array $data = array();
 
-    protected $headers = array();
+    protected array $headers = array();
 
-    protected $limit = 0;
+    protected  int $limit = 0;
 
-    protected $delimiter;
+    protected string $delimiter;
 
-    protected $inseeDept;
+    protected string $inseeDept;
 
-    protected $comCodeColumnIndex = 10;
+    protected int $comCodeColumnIndex = 10;
 
-    protected $cityNameColumnIndex = 0;
+    protected int $cityNameColumnIndex = 0;
 
     public function __construct($inseeDept = null, $delimiter = ";")
     {
@@ -38,7 +38,7 @@ class ParserService implements IParserService
 
     public function setHeaders()
     {
-        $fileHandle = fopen("infrastructure/cities/data/dept_list/headers.csv", "r");
+        $fileHandle = fopen(__DIR__ . "/../../../infrastructure/cities/data/dept_list/headers.csv", "r");
         $row = fgetcsv($fileHandle, $this->limit, $this->delimiter);
         $this->headers = $row;
         fclose($fileHandle);
@@ -51,7 +51,7 @@ class ParserService implements IParserService
 
     public function setCsv($inseeDept)
     {
-        $this->csv = "infrastructure/cities/data/dept_list/{$inseeDept}.csv";
+        $this->csv = __DIR__ . "/../../../infrastructure/cities/data/dept_list/{$inseeDept}.csv";
     }
 
     public function setDelimeter($delimiter)

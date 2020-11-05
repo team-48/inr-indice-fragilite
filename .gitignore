@@ -7,3 +7,7 @@
 
 composer.phar
 vendor/
+
+/* MacOS */
+
+.DS_Store
