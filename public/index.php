@@ -3,7 +3,9 @@
 use App\Controllers\CitySearchController;
 use App\Controllers\LandingController;
 use App\Controllers\StatsController;
+use App\Controllers\CityStatsController;
 use App\Domain\Services\Cities\CitiesService;
+use App\Domain\Services\Parser\ParserService;
 use App\Infrastructure\Cities\CitiesRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -32,6 +34,11 @@ $app->get("/cities", function (Request $request, Response $response, array $args
 
     $controller = new CitySearchController($citiesService);
     return $controller->getCitiesByPostalCode($request, $response, $args);
+});
+
+$app->get("/stats/{communeCod}", function (Request $request, Response $response, array $args) {
+    $controller = new CityStatsController();
+    return $controller->getCitiesByComCode($request, $response, $args);
 });
 
 $app->run();
