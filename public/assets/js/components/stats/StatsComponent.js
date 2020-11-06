@@ -127,22 +127,25 @@ export default class CityStatsContainer {
         let moyenneCompetence = 0;
         let moyenneScoreGlobal = 0;
         this.cityStats['cities'].forEach((stat) => {
-            moyenneInterfaceNumeriques += this.context == 'region' && parseFloat(stat.regionDigitalInterfaceAccess) || parseFloat(stat.departmentDigitalInterfaceAccess);
-            moyenneAccesInfo += this.context == 'region' && parseFloat(stat.regionInformationAccess) || parseFloat(stat.departmentInformationAccess);
-            moyenneCompetencesAdmin += this.context == 'region' && parseFloat(stat.regionAdministrativeSkills) || parseFloat(stat.departmentAdministrativeSkills);
-            moyenneCompetencesNumeriquesScolaires += this.context == 'region' && parseFloat(stat.regionDigitalSkills) || parseFloat(stat.departmentDigitalSkills);
-            moyenneAcces += this.context == 'region' && parseFloat(stat.regionGlobalAccess) || parseFloat(stat.regionGlobalAccess);
-            moyenneCompetence += this.context == 'region' && parseFloat(stat.regionGlobalSkills) || parseFloat(stat.departmentGlobalSkills);
-            moyenneScoreGlobal += this.context == 'region' && parseFloat(stat.regionGlobalScore) || parseFloat(stat.departmentGlobalScore);
+            moyenneInterfaceNumeriques += this.context === 'region' && parseFloat(stat.regionDigitalInterfaceAccess) || parseFloat(stat.departmentDigitalInterfaceAccess);
+            moyenneAccesInfo += this.context === 'region' && parseFloat(stat.regionInformationAccess) || parseFloat(stat.departmentInformationAccess);
+            moyenneCompetencesAdmin += this.context === 'region' && parseFloat(stat.regionAdministrativeSkills) || parseFloat(stat.departmentAdministrativeSkills);
+            moyenneCompetencesNumeriquesScolaires += this.context === 'region' && parseFloat(stat.regionDigitalSkills) || parseFloat(stat.departmentDigitalSkills);
+            moyenneAcces += this.context === 'region' && parseFloat(stat.regionGlobalAccess) || parseFloat(stat.regionGlobalAccess);
+            moyenneCompetence += this.context === 'region' && parseFloat(stat.regionGlobalSkills) || parseFloat(stat.departmentGlobalSkills);
+            moyenneScoreGlobal += this.context === 'region' && parseFloat(stat.regionGlobalScore) || parseFloat(stat.departmentGlobalScore);
         });
+
+        console.log(this.cityStats['cities'].length);
+        const len = this.cityStats['cities'].length >= 1 ? this.cityStats['cities'].length : 1;
         return {
-            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats['cities'].length,
-            'moyenneAccesInfo': moyenneAccesInfo / this.cityStats['cities'].length,
-            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / this.cityStats['cities'].length,
-            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / this.cityStats['cities'].length,
-            'moyenneAcces': moyenneAcces / this.cityStats['cities'].length,
-            'moyenneCompetences': moyenneCompetence / this.cityStats['cities'].length,
-            'moyenneScoreGlobal': moyenneScoreGlobal / this.cityStats['cities'].length
+            'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / len,
+            'moyenneAccesInfo': moyenneAccesInfo / len,
+            'moyenneCompetencesAdmin': moyenneCompetencesAdmin / len,
+            'moyenneCompetencesNumeriquesScolaires': moyenneCompetencesNumeriquesScolaires / len,
+            'moyenneAcces': moyenneAcces / len,
+            'moyenneCompetences': moyenneCompetence / len,
+            'moyenneScoreGlobal': moyenneScoreGlobal / len
         }
     }
 
@@ -267,7 +270,7 @@ export default class CityStatsContainer {
                             
                             <div class="bloc" id="gradient-explanations-content">
                                 <p>
-                                Les données sont collorées afin d'indiquer la qualité des indicateurs pour la localité
+                                Les données sont colorées afin d'indiquer la qualité des indicateurs pour la localité
                                 donnée par rapport au département ou à la région : plus un indicateur est rouge, plus
                                 il est médiocre en comparaison des autres localités concernées.
                                 </p>               
