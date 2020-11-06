@@ -629,17 +629,41 @@ footer p, footer a {
     .header-extended .search-bloc {
         top: 10vh;
     }
-    
+
+    .stats .toolbar {
+        width: 100%;
+    }
+
     .stats .top {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .stats .top .left, .stats .top .right {
         width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .stats .top .left .stat {
         width: 250px;
+    }
+
+    .stats .top .right .explain {
+        width: calc(100% - )
+        height: auto;
+    }
+
+    .stats .top .left .stat-full {
+        width: calc(100% - 36px);
+    }
+
+    .stats .top .left .stat-column {
+        width: calc(100% - 12px);
+    }
+
+    .stats .top .left .stat-column .stat {
+        width: 92%;
+        margin: 12px auto;
     }
 }
 
@@ -664,8 +688,15 @@ footer p, footer a {
         width: 70%;
     }
 
+    .stats .top .left .stat-full {
+        width: calc(100% - 36px);
+    }
+
     .stats .top .left .stat {
-        margin: 6px 0;
-        width: 100%;
+        width: calc(100% - 36px);
+    }
+
+    .stats .top .left .stat-column {
+        width: calc(100% - 12px);
     }
 }
