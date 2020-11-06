@@ -382,7 +382,6 @@ header #search_form_loader #search-field-loader {
 
 .stats .top .left .stat-full {
     width: 100%;
-    cursor: pointer;
 }
 
 .stats .top .left .stat-full > * {
@@ -396,6 +395,29 @@ header #search_form_loader #search-field-loader {
 .stats .top .left .stat-column {
     width: 47%;
     padding: 0;
+}
+
+.stats .top .left .stat .learn-more {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    color: #ccc;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.stats .top .left .stat .learn-more:hover {
+    cursor: pointer;
+}
+
+.stats .top .left .stat .learn-more p {
+    margin: 0;
+    line-height: 20px;
+    text-align: center;
+    font-size: 12px;
 }
 
 .stats .top .left .stat .number {
@@ -420,7 +442,6 @@ header #search_form_loader #search-field-loader {
 .stats .top .left .stat-column .stat {
     width: 86%;
     margin: 6px auto;
-    cursor: pointer;
 }
 
 .stats .top .left .stat-column .stat > *{

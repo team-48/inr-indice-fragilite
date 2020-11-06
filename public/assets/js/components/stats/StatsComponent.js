@@ -66,8 +66,15 @@ export default class CityStatsContainer {
         const scholarAndDigitalSkills = document.querySelector('#scholarAndDigitalSkills');
 
         if (globalScoreBloc) {
+            const globalScore = parseFloat(document.querySelector('#globalScoreValue').textContent);
+            const globalScoreMax = this.cityStats['scoring'][this.context];
+            const max = document.querySelector('#globalScore');
+            explanationTextContainer.innerHTML = this.getExplanationText('globalScore', globalScore, globalScoreMax);
             globalScoreBloc.addEventListener('click', () => {
-                explanationTextContainer.innerHTML = this.getExplanationText('globalScore');
+                const globalScore = parseFloat(document.querySelector('#globalScoreValue').textContent);
+                const globalScoreMax = this.cityStats['scoring'][this.context];
+                const max = document.querySelector('#globalScore');
+                explanationTextContainer.innerHTML = this.getExplanationText('globalScore', globalScore, globalScoreMax);
             });
         }
         if (digitalInterfacesAccessBloc) {
@@ -159,7 +166,7 @@ export default class CityStatsContainer {
         return ('rgb(' + r + ', '+ g +', ' + b + ')');
     }
 
-    getExplanationText(data) {
+    getExplanationText(data, globalScore, globalScoreMax) {
         switch(data) {
             case 'digitalInterfacesAccess':
                 return `
@@ -219,7 +226,23 @@ export default class CityStatsContainer {
                     projections de risques, qu’il convient, dans la mesure du
                     possible, de recouper par une enquête qualitative ou les
                     données d’enquêtes sociologiques.</p>
-                `;
+                <h3>Votre score</h3>
+                <p>`+ this.getAdvice(globalScore, globalScoreMax) +`</p>`;
+        }
+    }
+
+    getAdvice(data, max) {
+        const localContext = this.context === 'department' ? 'son département' : 'sa région';
+        const med = (max + 100) / 2;
+        if (data < 100) {
+            return `Le score global de ${this.city.cityName} n'est pas inquiétant par rapport à ${localContext}. Cela signifie
+            que le risque de fragilité numérique est correct comparé au reste de ${localContext}`;
+        } else if (100 <= data < med) {
+            return `Le score global de ${this.city.cityName} est moins bon que la majorité de ${localContext}. Cela signifie
+            que le risque de fragilité numérique est supérieur au reste de ${localContext}`;
+        } else {
+            return `Le score global de ${this.city.cityName} est inquiétant par rapport à la majorité de ${localContext}. 
+            Cela signifie que le risque de fragilité numérique est beaucoup plus élevé que le reste de ${localContext}`;
         }
     }
 
@@ -261,9 +284,12 @@ export default class CityStatsContainer {
                     <div class="top">
                 
                         <div class="left">
-                            <div class="bloc stat stat-full" id="globalScore">
+                            <div class="bloc stat stat-full">
                                 <p><b>Score global</b></p>
-                                <h1 class="number" style="color: ${this.colorData(averages['moyenneScoreGlobal'], this.cityStats['scoring']['department'])}">
+                                <div class="learn-more" id="globalScore">
+                                    <p>?</p>                           
+                                </div>
+                                <h1 class="number" id="globalScoreValue" style="color: ${this.colorData(averages['moyenneScoreGlobal'], this.cityStats['scoring']['department'])}">
                                     ${averages['moyenneScoreGlobal'].toFixed(2)}
                                 </h1>
                             </div>
@@ -276,15 +302,21 @@ export default class CityStatsContainer {
                                     </h1>
                                 </div>
                                 
-                                <div class="bloc stat" id="digitalInterfacesAccess">
+                                <div class="bloc stat">
                                     <p>Accès aux interfaces numériques</p>
+                                    <div class="learn-more" id="digitalInterfacesAccess">
+                                        <p>?</p>                           
+                                    </div>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneInterfaceNumerique'], this.cityStats['scoring']['digitalInterfacesAccess'])}">
                                         ${averages['moyenneInterfaceNumerique'].toFixed(2)}
                                     </h1>
                                 </div>
                     
-                                <div class="bloc stat" id="informationAccess">
+                                <div class="bloc stat">
                                     <p>Accès à l'information</p>
+                                    <div class="learn-more" id="informationAccess">
+                                        <p>?</p>                           
+                                    </div>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneAccesInfo'], this.cityStats['scoring']['informationAccess'])}">
                                         ${averages['moyenneAccesInfo'].toFixed(2)}
                                     </h1>
@@ -300,15 +332,21 @@ export default class CityStatsContainer {
                                     </h1>
                                 </div>
                                 
-                                <div class="bloc stat" id="administrativeSkills">
+                                <div class="bloc stat">
                                     <p>Compétences administratives</p>
+                                    <div class="learn-more" id="administrativeSkills">
+                                        <p>?</p>                           
+                                    </div>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesAdmin'], this.cityStats['scoring']['administrativeSkills'])}">
                                         ${averages['moyenneCompetencesAdmin'].toFixed(2)}
                                     </h1>
                                 </div>
                     
-                                <div class="bloc stat" id="scholarAndDigitalSkills">
+                                <div class="bloc stat">
                                     <p>Compétences numériques / scolaires</p>
+                                    <div class="learn-more" id="scholarAndDigitalSkills">
+                                        <p>?</p>                           
+                                    </div>
                                     <h1 class="number" style="color: ${this.colorData(averages['moyenneCompetencesNumeriquesScolaires'], this.cityStats['scoring']['schoolSkills'])}">
                                         ${averages['moyenneCompetencesNumeriquesScolaires'].toFixed(2)}
                                     </h1>
