@@ -223,7 +223,6 @@ header .header-extended-only {
     width: calc(100% - 24px);
     margin: 0;
     height: 60px;
-    border: 1px solid transparent;
     font-size: 18px;
     border-radius: 8px;
     padding: 0 12px;
