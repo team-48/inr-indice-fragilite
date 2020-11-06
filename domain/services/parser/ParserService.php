@@ -67,7 +67,7 @@ class ParserService implements IParserService
 
         $headers = $this->statisticsRepository->getStatsHeader();
 
-        if ($requestType == self::$REQUEST_TYPE_DEPARTMENT)
+        if ($requestType    == self::$REQUEST_TYPE_DEPARTMENT)
         {
             $cities = $this->filterCitiesByDepartment($headers, $cities, $departmentCode);
         }
@@ -122,11 +122,6 @@ class ParserService implements IParserService
      */
     private function filterCityByCityCode(array $headers, array $cities, string $value)
     {
-        if ($value[0] === "0")
-        {
-            $value = substr($value, 1);
-        }
-
         $filteredCities = array();
 
         foreach ($cities as $city)
