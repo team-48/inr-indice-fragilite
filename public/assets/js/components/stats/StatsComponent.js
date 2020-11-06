@@ -267,7 +267,7 @@ export default class CityStatsContainer {
                             
                             <div class="bloc" id="gradient-explanations-content">
                                 <p>
-                                Les données sont collorées afin d'indiquer la qualité des indicateurs pour la localité
+                                Les données sont colorées afin d'indiquer la qualité des indicateurs pour la localité
                                 donnée par rapport au département ou à la région : plus un indicateur est rouge, plus
                                 il est médiocre en comparaison des autres localités concernées.
                                 </p>               
