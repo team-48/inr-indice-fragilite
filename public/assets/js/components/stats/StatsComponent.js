@@ -123,7 +123,6 @@ export default class CityStatsContainer {
     }
 
     averageData() {
-        const localContext = this.context === 'department' ? 'departement' : 'region';
         let moyenneInterfaceNumeriques = 0;
         let moyenneAccesInfo = 0;
         let moyenneCompetencesAdmin = 0;
@@ -131,14 +130,14 @@ export default class CityStatsContainer {
         let moyenneAcces = 0;
         let moyenneCompetence = 0;
         let moyenneScoreGlobal = 0;
-        this.cityStats['cities'].forEach(function(stat) {
-            moyenneInterfaceNumeriques += parseFloat(stat['ACCÈS AUX INTERFACES NUMERIQUES ' + localContext + ' 1']);
-            moyenneAccesInfo += parseFloat(stat['ACCES A L\'INFORMATION ' + localContext + ' 1']);
-            moyenneCompetencesAdmin += parseFloat(stat['COMPETENCES ADMINISTATIVES ' + localContext + ' 1']);
-            moyenneCompetencesNumeriquesScolaires += parseFloat(stat['COMPÉTENCES NUMÉRIQUES / SCOLAIRES ' + localContext + ' 1']);
-            moyenneAcces += parseFloat(stat['GLOBAL ACCES ' + localContext + ' 1']);
-            moyenneCompetence += parseFloat(stat['GLOBAL COMPETENCES ' + (localContext === "departement" ? ' ' : '') + localContext + ' 1']);
-            moyenneScoreGlobal += parseFloat(stat['SCORE GLOBAL ' + localContext + ' 1']);
+        this.cityStats['cities'].forEach((stat) => {
+            moyenneInterfaceNumeriques += this.context == 'region' && parseFloat(stat.regionDigitalInterfaceAccess) || parseFloat(stat.departmentDigitalInterfaceAccess);
+            moyenneAccesInfo += this.context == 'region' && parseFloat(stat.regionInformationAccess) || parseFloat(stat.departmentInformationAccess);
+            moyenneCompetencesAdmin += this.context == 'region' && parseFloat(stat.regionAdministrativeSkills) || parseFloat(stat.departmentAdministrativeSkills);
+            moyenneCompetencesNumeriquesScolaires += this.context == 'region' && parseFloat(stat.regionDigitalSkills) || parseFloat(stat.departmentDigitalSkills);
+            moyenneAcces += this.context == 'region' && parseFloat(stat.regionGlobalAccess) || parseFloat(stat.regionGlobalAccess);
+            moyenneCompetence += this.context == 'region' && parseFloat(stat.regionGlobalSkills) || parseFloat(stat.departmentGlobalSkills);
+            moyenneScoreGlobal += this.context == 'region' && parseFloat(stat.regionGlobalScore) || parseFloat(stat.departmentGlobalScore);
         });
         return {
             'moyenneInterfaceNumerique': moyenneInterfaceNumeriques / this.cityStats['cities'].length,
@@ -381,49 +380,56 @@ export default class CityStatsContainer {
                     
                         <h2>Quartiers</h2>
                         <p>Ces statistiques concernent les quartiers de cette agglomération</p> 
-                         `+ this.cityStats['cities'].map((bloc, index) => `
+                         `+ this.cityStats['cities'].map((city, index) => `
                             <div class="bloc">
                                 <div class="bloc-header">
-                                    <h2>${bloc['Nom Iris']}</h2>
+                                    <h2>${city.irisName}</h2>
                                 </div>
                                 <div class="bloc-content">
                                     <table>
                                         <tbody>
                                             <tr>
                                                 <td>Code Iris</td>
-                                                <td>${bloc['Iris']}</td>
+                                                <td>${city.iris}</td>
                                             </tr>
                                             <tr>
                                                 <td>Type Iris</td>
-                                                <td>${bloc['Type Iris']}</td>
+                                                <td>${city.irisType}</td>
                                             </tr>
                                             <tr>
                                                 <td>Accès à l'information</td>
-                                                <td>${parseFloat(bloc['ACCES A L\'INFORMATION ' + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionInformationAccess).toFixed(2) ||
+                                                    parseFloat(city.departmentInformationAccess).toFixed(2) }</td>
                                             </tr>
                                             <tr>
                                                 <td>Accès aux interfaces numériques</td>
-                                                <td>${parseFloat(bloc['ACCÈS AUX INTERFACES NUMERIQUES ' + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionDigitalInterfaceAccess).toFixed(2) ||
+                                                    parseFloat(city.departmentDigitalInterfaceAccess).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Compétences administratives</td>
-                                                <td>${parseFloat(bloc['COMPETENCES ADMINISTATIVES ' + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionAdministrativeSkills).toFixed(2) ||
+                                                    parseFloat(city.departmentAdministrativeSkills).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Compétences numériques et scolaires</td>
-                                                <td>${parseFloat(bloc['COMPÉTENCES NUMÉRIQUES / SCOLAIRES ' + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionDigitalSkills).toFixed(2) ||
+                                                    parseFloat(city.departmentDigitalSkills).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Score global accès</td>
-                                                <td>${parseFloat(bloc['GLOBAL ACCES ' + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionGlobalAccess).toFixed(2) ||
+                                                    parseFloat(city.departmentGlobalAccess).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Score global compétences</td>
-                                                <td>${parseFloat(bloc['GLOBAL COMPETENCES ' + (localContext === "departement" ? ' ' : '') + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionGlobalSkills).toFixed(2) ||
+                                                    parseFloat(city.departmentGlobalSkills).toFixed(2) }</td>
                                             </tr>
                                             <tr>
                                                 <td>Score global</td>
-                                                <td>${parseFloat(bloc['SCORE GLOBAL ' + localContext + ' 1']).toFixed(2)}</td>
+                                                <td>${this.context === 'region' && parseFloat(city.regionGlobalScore).toFixed(2) ||
+                                                    parseFloat(city.departmentGlobalScore).toFixed(2) }</td>
                                             </tr>
                                         </tbody>
                                     </table>

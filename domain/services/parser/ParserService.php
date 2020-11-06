@@ -6,6 +6,7 @@ use App\Domain\Exceptions\BadRequestException;
 use App\Domain\Repositories\IRegionDepartmentRepository;
 use App\Domain\Repositories\IStatisticsRepository;
 use App\Domain\Views\CityStatsScoring;
+use App\Domain\Views\CityStatsViewModel;
 
 class ParserService implements IParserService
 {
@@ -14,13 +15,26 @@ class ParserService implements IParserService
 
     private static string $COLUMN_CITY_CODE = "COM";
     private static string $COLUMN_CITY_DEPARTMENT = "Insee Dep";
+
+    private static string $COLUMN_CITY_IRIS = "Code Iris";
+    private static string $COLUMN_CITY_IRIS_NAME = "Nom Iris";
+    private static string $COLUMN_CITY_IRIS_TYPE = "Type Iris";
+    
     private static string $COLUMN_CITY_DEPARTMENT_SCORE = "SCORE GLOBAL departement 1";
-    private static string $COLUMN_CITY_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
-    private static string $COLUMN_CITY_ACCESS_SCORE = "GLOBAL ACCES departement 1";
-    private static string $COLUMN_CITY_ADMINISTRATIVE_SKILLS_SCORE = "COMPETENCES ADMINISTATIVES departement 1";
-    private static string $COLUMN_CITY_DIGITAL_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
-    private static string $COLUMN_CITY_SCHOOL_SKILLS_SCORE = "COMPÉTENCES NUMÉRIQUES / SCOLAIRES departement 1";
-    private static string $COLUMN_CITY_SKILLS_SCORE = "GLOBAL COMPETENCES  departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_ACCESS_SCORE = "GLOBAL ACCES departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_ADMINISTRATIVE_SKILLS_SCORE = "COMPETENCES ADMINISTATIVES departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_DIGITAL_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_SCHOOL_SKILLS_SCORE = "COMPÉTENCES NUMÉRIQUES / SCOLAIRES departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_SKILLS_SCORE = "GLOBAL COMPETENCES  departement 1";
+
+    private static string $COLUMN_CITY_REGION_SCORE = "SCORE GLOBAL region 1";
+    private static string $COLUMN_CITY_REGION_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES region 1";
+    private static string $COLUMN_CITY_REGION_ACCESS_SCORE = "GLOBAL ACCES region 1";
+    private static string $COLUMN_CITY_REGION_ADMINISTRATIVE_SKILLS_SCORE = "COMPETENCES ADMINISTATIVES region 1";
+    private static string $COLUMN_CITY_REGION_DIGITAL_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES region 1";
+    private static string $COLUMN_CITY_REGION_SCHOOL_SKILLS_SCORE = "COMPÉTENCES NUMÉRIQUES / SCOLAIRES region 1";
+    private static string $COLUMN_CITY_REGION_SKILLS_SCORE = "GLOBAL COMPETENCES region 1";
 
     private IStatisticsRepository $statisticsRepository;
     private IRegionDepartmentRepository $regionDepartmentRepository;
@@ -64,7 +78,7 @@ class ParserService implements IParserService
 
         return [
             'scoring' => $scoring,
-            'cities' => $citiesForCityCode
+            'cities' => $this->mapResponse($citiesForCityCode)
         ];
     }
 
@@ -134,7 +148,8 @@ class ParserService implements IParserService
 
         foreach ($cities as $city)
         {
-            $departmentScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_SCORE : self::$COLUMN_CITY_DEPARTMENT_SCORE;
+            $departmentScoreIndex = $this->getColumnIndexByName($headers, $column);
             $departmentScore = (int)$city[$departmentScoreIndex];
 
             if ($departmentScore > $result->department)
@@ -142,7 +157,8 @@ class ParserService implements IParserService
                 $result->department = $departmentScore;
             }
 
-            $informationAccessScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_INFORMATION_ACCESS_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_INFORMATION_ACCESS_SCORE : self::$COLUMN_CITY_DEPARTMENT_INFORMATION_ACCESS_SCORE;
+            $informationAccessScoreIndex = $this->getColumnIndexByName($headers, $column);
             $informationAccessScore = (int)$city[$informationAccessScoreIndex];
 
             if ($informationAccessScore > $result->informationAccess)
@@ -150,7 +166,8 @@ class ParserService implements IParserService
                 $result->informationAccess = $informationAccessScore;
             }
 
-            $accessScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_ACCESS_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_ACCESS_SCORE : self::$COLUMN_CITY_DEPARTMENT_ACCESS_SCORE;
+            $accessScoreIndex = $this->getColumnIndexByName($headers, $column);
             $accessScore = (int)$city[$accessScoreIndex];
 
             if ($accessScore > $result->access)
@@ -158,8 +175,8 @@ class ParserService implements IParserService
                 $result->access = $accessScore;
             }
 
-
-            $administrativeSkillsScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_ADMINISTRATIVE_SKILLS_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_ADMINISTRATIVE_SKILLS_SCORE : self::$COLUMN_CITY_DEPARTMENT_ADMINISTRATIVE_SKILLS_SCORE;
+            $administrativeSkillsScoreIndex = $this->getColumnIndexByName($headers, $column);
             $administrativeSkillsScore = (int)$city[$administrativeSkillsScoreIndex];
 
             if ($administrativeSkillsScore > $result->administrativeSkills)
@@ -167,7 +184,8 @@ class ParserService implements IParserService
                 $result->administrativeSkills = $administrativeSkillsScore;
             }
 
-            $digitalInterfaceAccessScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_DIGITAL_ACCESS_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_DIGITAL_ACCESS_SCORE : self::$COLUMN_CITY_DEPARTMENT_DIGITAL_ACCESS_SCORE;
+            $digitalInterfaceAccessScoreIndex = $this->getColumnIndexByName($headers, $column);
             $digitalInterfaceAccessScore = (int)$city[$digitalInterfaceAccessScoreIndex];
 
             if ($digitalInterfaceAccessScore > $result->digitalInterfacesAccess)
@@ -175,7 +193,8 @@ class ParserService implements IParserService
                 $result->digitalInterfacesAccess = $digitalInterfaceAccessScore;
             }
 
-            $schoolSkillsScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_SCHOOL_SKILLS_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_SCHOOL_SKILLS_SCORE : self::$COLUMN_CITY_DEPARTMENT_SCHOOL_SKILLS_SCORE;
+            $schoolSkillsScoreIndex = $this->getColumnIndexByName($headers, $column);
             $schoolSkillsScore = (int)$city[$schoolSkillsScoreIndex];
 
             if ($schoolSkillsScore > $result->schoolSkills)
@@ -183,7 +202,8 @@ class ParserService implements IParserService
                 $result->schoolSkills = $schoolSkillsScore;
             }
 
-            $skillsScoreIndex = $this->getColumnIndexByName($headers, self::$COLUMN_CITY_SKILLS_SCORE);
+            $column = $scoringType == self::$REQUEST_TYPE_REGION ? self::$COLUMN_CITY_REGION_SKILLS_SCORE : self::$COLUMN_CITY_DEPARTMENT_SKILLS_SCORE;
+            $skillsScoreIndex = $this->getColumnIndexByName($headers, $column);
             $skillsScore = (int)$city[$skillsScoreIndex];
 
             if ($skillsScore > $result->skills) {
@@ -192,5 +212,40 @@ class ParserService implements IParserService
         }
 
         return $result;
+    }
+
+    private function mapResponse(array $cities): array {
+        return array_map(function ($city) {
+
+            $model = new CityStatsViewModel();
+
+            $model->iris = $city[self::$COLUMN_CITY_IRIS];
+            $model->irisName = $city[self::$COLUMN_CITY_IRIS_NAME];
+            $model->irisType = $city[self::$COLUMN_CITY_IRIS_TYPE];
+
+            $model->departmentGlobalScore = $city[self::$COLUMN_CITY_DEPARTMENT_SCORE];
+            $model->regionGlobalScore = $city[self::$COLUMN_CITY_REGION_SCORE];
+
+            $model->departmentInformationAccess = $city[self::$COLUMN_CITY_DEPARTMENT_INFORMATION_ACCESS_SCORE];
+            $model->regionInformationAccess = $city[self::$COLUMN_CITY_REGION_INFORMATION_ACCESS_SCORE];
+
+            $model->departmentDigitalInterfaceAccess = $city[self::$COLUMN_CITY_DEPARTMENT_DIGITAL_ACCESS_SCORE];
+            $model->regionDigitalInterfaceAccess = $city[self::$COLUMN_CITY_REGION_DIGITAL_ACCESS_SCORE];
+
+            $model->departmentAdministrativeSkills = $city[self::$COLUMN_CITY_DEPARTMENT_ADMINISTRATIVE_SKILLS_SCORE];
+            $model->regionAdministrativeSkills = $city[self::$COLUMN_CITY_REGION_ADMINISTRATIVE_SKILLS_SCORE];
+
+            $model->departmentDigitalSkills = $city[self::$COLUMN_CITY_DEPARTMENT_SCHOOL_SKILLS_SCORE];
+            $model->regionDigitalSkills = $city[self::$COLUMN_CITY_REGION_SCHOOL_SKILLS_SCORE];
+
+            $model->departmentGlobalAccess = $city[self::$COLUMN_CITY_DEPARTMENT_ACCESS_SCORE];
+            $model->regionGlobalAccess = $city[self::$COLUMN_CITY_REGION_ACCESS_SCORE];
+
+            $model->departmentGlobalSkills = $city[self::$COLUMN_CITY_DEPARTMENT_SKILLS_SCORE];
+            $model->regionGlobalSkills = $city[self::$COLUMN_CITY_REGION_SKILLS_SCORE];
+
+            return $model;
+
+        }, $cities);
     }
 }
