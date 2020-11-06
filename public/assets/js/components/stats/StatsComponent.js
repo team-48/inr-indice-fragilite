@@ -68,12 +68,8 @@ export default class CityStatsContainer {
         if (globalScoreBloc) {
             const globalScore = parseFloat(document.querySelector('#globalScoreValue').textContent);
             const globalScoreMax = this.cityStats['scoring'][this.context];
-            const max = document.querySelector('#globalScore');
             explanationTextContainer.innerHTML = this.getExplanationText('globalScore', globalScore, globalScoreMax);
             globalScoreBloc.addEventListener('click', () => {
-                const globalScore = parseFloat(document.querySelector('#globalScoreValue').textContent);
-                const globalScoreMax = this.cityStats['scoring'][this.context];
-                const max = document.querySelector('#globalScore');
                 explanationTextContainer.innerHTML = this.getExplanationText('globalScore', globalScore, globalScoreMax);
             });
         }
@@ -247,7 +243,6 @@ export default class CityStatsContainer {
 
     render() {
         if (this.city !== null && this.cityStats !== null) {
-            const localContext = this.context === 'department' ? 'departement' : 'region';
             const averages = this.averageData();
             return `<div id="city_stats_loader_container"></div>
                     <div class="stats-header">
