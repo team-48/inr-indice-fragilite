@@ -1,6 +1,7 @@
 export default class GeneratePdfBtnComponent {
-    constructor() {
+    constructor(cityName) {
         this.container = document.querySelector('#generate-pdf-btn-container');
+        this.cityName = cityName;
         if (this.container) {
             this.container.innerHTML = this.render();
         }
@@ -15,7 +16,14 @@ export default class GeneratePdfBtnComponent {
 
     generatePDF() {
         const element = document.getElementById('stats');
-        html2pdf(element);
+        const opt = {
+            filename:     `inr-${this.cityName}.pdf`,
+            html2canvas:  {
+                scale: 2,
+                windowWidth: 950},
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
     }
 
     afterViewInit() {

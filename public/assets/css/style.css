@@ -609,7 +609,7 @@ footer p, footer a {
     font-size: 11px;
 }
 
-@media screen and (max-width: 1439px ) {
+@media screen and (max-width: 1438px ) {
     .stats .top .left .stat {
         width: 100%;
     }
