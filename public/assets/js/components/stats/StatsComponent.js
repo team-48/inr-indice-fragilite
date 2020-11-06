@@ -104,19 +104,19 @@ export default class CityStatsContainer {
             onCityLoadFail();
             return;
         }
-        if (!localStorage.getItem(this.city.postalCode + '-' + this.context))
+        if (!localStorage.getItem(this.city.cityCode + '-' + this.context))
         {
             fetch(`${window.location.href}stats/${this.city.cityCode}?type=${context}`).then(response => {
                 response.json().then(result => {
                     this.cityStats = result;
-                    localStorage.setItem(this.city.postalCode + '-' + this.context, JSON.stringify(result));
+                    localStorage.setItem(this.city.cityCode + '-' + this.context, JSON.stringify(result));
                     onCityLoaded();
                 });
             });
         }
         else
         {
-            const result = JSON.parse(localStorage.getItem(this.city.postalCode + '-' + this.context));
+            const result = JSON.parse(localStorage.getItem(this.city.cityCode + '-' + this.context));
             this.cityStats = result;
             onCityLoaded();
         }
