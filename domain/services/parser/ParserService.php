@@ -61,17 +61,11 @@ class ParserService implements IParserService
 
         $departmentCode = substr($cityCode, 0, 3);
 
-        if ($departmentCode[0] == 0) {
-            $departmentCode = substr($departmentCode, 1);
-        }
-
-
         $regionCode = $this->regionDepartmentRepository->getRegionCodeForDepartment($departmentCode);
 
         $cities = $this->statisticsRepository->getCityStatsByRegionCode($regionCode);
 
         $headers = $this->statisticsRepository->getStatsHeader();
-
 
         if ($requestType == self::$REQUEST_TYPE_DEPARTMENT)
         {
@@ -92,6 +86,10 @@ class ParserService implements IParserService
         return array_filter($cities, function ($city) use ($headers, $departmentCode) {
             if ((int)$departmentCode < 971) {
                 $departmentCode = substr($departmentCode, 0, 2);
+            }
+
+            if ($departmentCode[0] == 0) {
+                $departmentCode = substr($departmentCode, 1);
             }
 
             return (strcmp($city[$this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT)], $departmentCode) === 0);
