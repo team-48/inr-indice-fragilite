@@ -233,7 +233,7 @@ header .header-extended-only {
 
 .header-extended .search-results {
     position: absolute;
-    top: calc(20vh);
+    top: 150px;
     width: 100%;
     left: 0;
     margin: 0;
