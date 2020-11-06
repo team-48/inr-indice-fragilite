@@ -101,14 +101,16 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 80%;
     height: 60px;
     border-bottom: 1px solid #ddd;
     display: flex;
     padding: 0 10%;
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 10;
+    transition: 0.5s;
 }
 
 header .logo {
@@ -119,6 +121,7 @@ header .logo {
 header .search-bloc {
     width: 50%;
     max-width: 600px;
+    transition: 0.5s;
 }
 
 header #search_input_container {
@@ -178,6 +181,37 @@ header #search_form_loader #search-field-loader {
     }
 }
 
+.header-extended {
+    display: block;
+    height: calc(100vh - 120px);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition: 0.5s;
+}
+
+.header-extended .search-bloc {
+    position: absolute;
+    top: calc(50vh - 80px);
+    left: 20%;
+    width: 60%;
+    max-width: none;
+    height: calc(100vh - 120px - 120px);
+    margin: 0 auto;
+}
+
+.header-extended .search-bloc .search-field {
+    width: 100%;
+    margin: 0;
+    height: 60px;
+    border: 1px solid transparent;
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 0 12px;
+    transition: 0.3s;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid #ddd;
+}
+
 .no-cities {
     width: 60%;
     height: calc(100vh - 210px);
@@ -212,7 +246,7 @@ header #search_form_loader #search-field-loader {
     margin-left: 20px;
     margin-top: 6px;
     background-color: white;
-    max-height: 400px;
+    max-height: 300px;
     z-index: 2;
 }
 
