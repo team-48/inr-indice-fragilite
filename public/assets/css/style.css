@@ -649,7 +649,7 @@ footer p, footer a {
     }
 
     .stats .top .right .explain {
-        width: calc(100% - )
+        width: calc(100% - 12px);
         height: auto;
     }
 
