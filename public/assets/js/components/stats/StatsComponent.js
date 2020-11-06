@@ -127,13 +127,13 @@ export default class CityStatsContainer {
         let moyenneCompetence = 0;
         let moyenneScoreGlobal = 0;
         this.cityStats['cities'].forEach((stat) => {
-            moyenneInterfaceNumeriques += this.context == 'region' && parseFloat(stat.regionDigitalInterfaceAccess) || parseFloat(stat.departmentDigitalInterfaceAccess);
-            moyenneAccesInfo += this.context == 'region' && parseFloat(stat.regionInformationAccess) || parseFloat(stat.departmentInformationAccess);
-            moyenneCompetencesAdmin += this.context == 'region' && parseFloat(stat.regionAdministrativeSkills) || parseFloat(stat.departmentAdministrativeSkills);
-            moyenneCompetencesNumeriquesScolaires += this.context == 'region' && parseFloat(stat.regionDigitalSkills) || parseFloat(stat.departmentDigitalSkills);
-            moyenneAcces += this.context == 'region' && parseFloat(stat.regionGlobalAccess) || parseFloat(stat.regionGlobalAccess);
-            moyenneCompetence += this.context == 'region' && parseFloat(stat.regionGlobalSkills) || parseFloat(stat.departmentGlobalSkills);
-            moyenneScoreGlobal += this.context == 'region' && parseFloat(stat.regionGlobalScore) || parseFloat(stat.departmentGlobalScore);
+            moyenneInterfaceNumeriques += this.context === 'region' && parseFloat(stat.regionDigitalInterfaceAccess) || parseFloat(stat.departmentDigitalInterfaceAccess);
+            moyenneAccesInfo += this.context === 'region' && parseFloat(stat.regionInformationAccess) || parseFloat(stat.departmentInformationAccess);
+            moyenneCompetencesAdmin += this.context === 'region' && parseFloat(stat.regionAdministrativeSkills) || parseFloat(stat.departmentAdministrativeSkills);
+            moyenneCompetencesNumeriquesScolaires += this.context === 'region' && parseFloat(stat.regionDigitalSkills) || parseFloat(stat.departmentDigitalSkills);
+            moyenneAcces += this.context === 'region' && parseFloat(stat.regionGlobalAccess) || parseFloat(stat.regionGlobalAccess);
+            moyenneCompetence += this.context === 'region' && parseFloat(stat.regionGlobalSkills) || parseFloat(stat.departmentGlobalSkills);
+            moyenneScoreGlobal += this.context === 'region' && parseFloat(stat.regionGlobalScore) || parseFloat(stat.departmentGlobalScore);
         });
 
         console.log(this.cityStats['cities'].length);
