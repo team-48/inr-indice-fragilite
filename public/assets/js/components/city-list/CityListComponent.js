@@ -13,8 +13,11 @@ export default class CityListContainer {
     afterViewInit() {
         this.cities.forEach((city, index) => {
             const cityElement = document.querySelector(`#city-${index}`);
-
             cityElement.addEventListener('click', () => {
+                const headerComponent = document.querySelector('#header');
+                if (headerComponent && headerComponent.classList.contains('header-extended')) {
+                    headerComponent.classList.remove('header-extended');
+                }
                 this.update();
                 this.cityStatsComponent.update(city);
                 document.querySelector('#search_form').value = "";

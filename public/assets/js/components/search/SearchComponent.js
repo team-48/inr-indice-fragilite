@@ -20,6 +20,8 @@ export default class SearchInputContainer {
                     this.cityComponent.update(result);
                 });
             })
+        } else {
+            this.cityComponent.update([]);
         }
     }
 
