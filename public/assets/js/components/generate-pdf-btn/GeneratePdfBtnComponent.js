@@ -1,6 +1,7 @@
 export default class GeneratePdfBtnComponent {
-    constructor() {
+    constructor(cityName) {
         this.container = document.querySelector('#generate-pdf-btn-container');
+        this.cityName = cityName;
         if (this.container) {
             this.container.innerHTML = this.render();
         }
@@ -14,8 +15,26 @@ export default class GeneratePdfBtnComponent {
     }
 
     generatePDF() {
-        const element = document.getElementById('stats');
-        html2pdf(element);
+        const scriptPromise = new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            document.body.appendChild(script);
+            script.onload = resolve;
+            script.onerror = reject;
+            script.async = true;
+            script.src = `${window.location.href}assets/js/html2pdf.node.js`;
+        });
+
+        scriptPromise.then(() => {
+            const element = document.getElementById('stats');
+            const opt = {
+                filename:     `inr-${this.cityName}.pdf`,
+                html2canvas:  {
+                    scale: 2,
+                    windowWidth: 950},
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
     }
 
     afterViewInit() {
