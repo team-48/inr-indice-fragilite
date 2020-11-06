@@ -12,6 +12,8 @@ class RegionDepartmentRepository implements IRegionDepartmentRepository
      */
     public function getRegionCodeForDepartment(string $departmentCode): string
     {
+        $departmentCode = substr($departmentCode, 0, 2);
+
         $filePath = __DIR__ . "/data/reg-dept-mapper.json";
 
         $fileContent = file_get_contents($filePath);

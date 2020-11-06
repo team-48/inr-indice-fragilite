@@ -59,7 +59,12 @@ class ParserService implements IParserService
             throw new BadRequestException("incorrect query type");
         }
 
-        $departmentCode = substr($cityCode, 0, 2);
+        $departmentCode = substr($cityCode, 0, 3);
+
+        if ($departmentCode[0] == 0) {
+            $departmentCode = substr($departmentCode, 1);
+        }
+
 
         $regionCode = $this->regionDepartmentRepository->getRegionCodeForDepartment($departmentCode);
 
@@ -67,7 +72,8 @@ class ParserService implements IParserService
 
         $headers = $this->statisticsRepository->getStatsHeader();
 
-        if ($requestType    == self::$REQUEST_TYPE_DEPARTMENT)
+
+        if ($requestType == self::$REQUEST_TYPE_DEPARTMENT)
         {
             $cities = $this->filterCitiesByDepartment($headers, $cities, $departmentCode);
         }
@@ -84,6 +90,10 @@ class ParserService implements IParserService
 
     private function filterCitiesByDepartment(array $headers, array $cities, string $departmentCode): array {
         return array_filter($cities, function ($city) use ($headers, $departmentCode) {
+            if ((int)$departmentCode < 971) {
+                $departmentCode = substr($departmentCode, 0, 2);
+            }
+
             return (strcmp($city[$this->getColumnIndexByName($headers, self::$COLUMN_CITY_DEPARTMENT)], $departmentCode) === 0);
         });
     }
@@ -122,6 +132,10 @@ class ParserService implements IParserService
      */
     private function filterCityByCityCode(array $headers, array $cities, string $value)
     {
+        if ($value[0] == 0) {
+            $value = substr($value, 1);
+        }
+
         $filteredCities = array();
 
         foreach ($cities as $city)
