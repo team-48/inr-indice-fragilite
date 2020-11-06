@@ -21,7 +21,7 @@ class ParserService implements IParserService
     private static string $COLUMN_CITY_IRIS_TYPE = "Type Iris";
     
     private static string $COLUMN_CITY_DEPARTMENT_SCORE = "SCORE GLOBAL departement 1";
-    private static string $COLUMN_CITY_DEPARTMENT_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
+    private static string $COLUMN_CITY_DEPARTMENT_INFORMATION_ACCESS_SCORE = "ACCES A L'INFORMATION departement 1";
     private static string $COLUMN_CITY_DEPARTMENT_ACCESS_SCORE = "GLOBAL ACCES departement 1";
     private static string $COLUMN_CITY_DEPARTMENT_ADMINISTRATIVE_SKILLS_SCORE = "COMPETENCES ADMINISTATIVES departement 1";
     private static string $COLUMN_CITY_DEPARTMENT_DIGITAL_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES departement 1";
@@ -29,7 +29,7 @@ class ParserService implements IParserService
     private static string $COLUMN_CITY_DEPARTMENT_SKILLS_SCORE = "GLOBAL COMPETENCES  departement 1";
 
     private static string $COLUMN_CITY_REGION_SCORE = "SCORE GLOBAL region 1";
-    private static string $COLUMN_CITY_REGION_INFORMATION_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES region 1";
+    private static string $COLUMN_CITY_REGION_INFORMATION_ACCESS_SCORE = "ACCES A L'INFORMATION region 1";
     private static string $COLUMN_CITY_REGION_ACCESS_SCORE = "GLOBAL ACCES region 1";
     private static string $COLUMN_CITY_REGION_ADMINISTRATIVE_SKILLS_SCORE = "COMPETENCES ADMINISTATIVES region 1";
     private static string $COLUMN_CITY_REGION_DIGITAL_ACCESS_SCORE = "ACCÈS AUX INTERFACES NUMERIQUES region 1";
